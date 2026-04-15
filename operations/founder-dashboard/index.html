@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JetLag Founder Dashboard</title>
+  <style>
+    :root {
+      --bg: #f2efe9;
+      --surface: rgba(255, 255, 255, 0.86);
+      --ink: #18222f;
+      --muted: #62707c;
+      --teal: #0f766e;
+      --amber: #d97706;
+      --rose: #a53b51;
+      --line: rgba(24, 34, 47, 0.1);
+      --shadow: 0 20px 50px rgba(24, 34, 47, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(217, 119, 6, 0.14), transparent 30%),
+        linear-gradient(180deg, #faf7f1 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+    .hero, .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 28px;
+      margin-bottom: 22px;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      letter-spacing: -0.04em;
+    }
+    .sub {
+      margin-top: 14px;
+      max-width: 760px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .card {
+      grid-column: span 3;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+    }
+    .label {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.74rem;
+    }
+    .value {
+      margin-top: 10px;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .hint {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .success { color: var(--teal); }
+    .warning { color: var(--amber); }
+    .danger { color: var(--rose); }
+    .panel {
+      padding: 24px;
+      margin-top: 18px;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th { font-size: 0.82rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    ul { margin: 14px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.7; }
+    .pill {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: rgba(24, 34, 47, 0.06);
+    }
+    .pill.live { background: rgba(15, 118, 110, 0.12); color: var(--teal); }
+    .pill.missing { background: rgba(165, 59, 81, 0.12); color: var(--rose); }
+    .pill.partial { background: rgba(217, 119, 6, 0.14); color: var(--amber); }
+    a { color: var(--teal); }
+    @media (max-width: 980px) {
+      .card { grid-column: span 6; }
+      .split { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      .card { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>JetLag Founder Dashboard</h1>
+      <p class="sub">
+        One place to track near-term revenue, audience growth, feedback flow, and launch readiness while you operate JetLag as a solo founder with AI support.
+      </p>
+      <div class="grid">
+        <article class="card">
+          <div class="label">Revenue Goal</div>
+          <div class="value success">$100 today</div>
+          <div class="hint">Target the first 3 to 5 concierge sales before optimizing anything else.</div>
+        </article>
+        <article class="card">
+          <div class="label">Daily Outreach</div>
+          <div class="value">25</div>
+          <div class="hint">Warm DMs, cold messages, and high-intent comment replies.</div>
+        </article>
+        <article class="card">
+          <div class="label">Newsletter Goal</div>
+          <div class="value">2 issues/week</div>
+          <div class="hint">One flagship tactical issue and one short signal issue.</div>
+        </article>
+        <article class="card">
+          <div class="label">Critical Blocker</div>
+          <div class="value danger">Payments + signup links</div>
+          <div class="hint">These still need real external tools connected before the system is live end to end.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel split">
+      <div>
+        <h2>Launch Status</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>System</th>
+              <th>Status</th>
+              <th>What exists</th>
+              <th>What is missing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Website</td>
+              <td><span class="pill partial">Partial</span></td>
+              <td>Concierge landing page HTML exists</td>
+              <td>Needs public deployment and final links</td>
+            </tr>
+            <tr>
+              <td>Revenue</td>
+              <td><span class="pill partial">Partial</span></td>
+              <td>Offer, scripts, intake, and delivery flow exist</td>
+              <td>Needs payment link and active outreach</td>
+            </tr>
+            <tr>
+              <td>Newsletter</td>
+              <td><span class="pill partial">Partial</span></td>
+              <td>Strategy, formats, workflow, and first issue exist</td>
+              <td>Needs email platform and signup form</td>
+            </tr>
+            <tr>
+              <td>Feedback</td>
+              <td><span class="pill missing">Missing</span></td>
+              <td>Email reply path is possible</td>
+              <td>Needs a real form and response storage</td>
+            </tr>
+            <tr>
+              <td>Daily signals</td>
+              <td><span class="pill live">Live</span></td>
+              <td>8:00 AM revenue-focused scan automation exists</td>
+              <td>None, but reports need to be reviewed daily</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Today's Priorities</h2>
+        <ul>
+          <li>Create a Stripe or Gumroad payment link.</li>
+          <li>Deploy the landing page and replace placeholder email CTAs with real links.</li>
+          <li>Create a newsletter signup form in Beehiiv, ConvertKit, or Substack.</li>
+          <li>Create a Tally or Google Form for traveler feedback and objections.</li>
+          <li>Send 25 targeted outreach messages tied to upcoming trips.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Manual KPI Tracker</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Today</th>
+            <th>This Week</th>
+            <th>Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Outreach messages sent</td>
+            <td>0</td>
+            <td>0</td>
+            <td>25/day</td>
+          </tr>
+          <tr>
+            <td>Positive replies</td>
+            <td>0</td>
+            <td>0</td>
+            <td>5+/week</td>
+          </tr>
+          <tr>
+            <td>Paid JetLag Express sales</td>
+            <td>0</td>
+            <td>0</td>
+            <td>3 first customers</td>
+          </tr>
+          <tr>
+            <td>Newsletter subscribers</td>
+            <td>0</td>
+            <td>0</td>
+            <td>25 first subscribers</td>
+          </tr>
+          <tr>
+            <td>Feedback responses</td>
+            <td>0</td>
+            <td>0</td>
+            <td>5/week</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Repo Shortcuts</h2>
+      <ul>
+        <li><a href="../../revenue-sprint/landing-page/index.html">Concierge landing page</a></li>
+        <li><a href="../../revenue-sprint/24-hour-revenue-plan.md">24-hour revenue plan</a></li>
+        <li><a href="../../product-development/product/newsletters/newsletter-strategy.md">Newsletter strategy</a></li>
+        <li><a href="../../product-development/product/newsletters/issues/issue-001-why-travelers-lose-the-first-48-hours.md">Issue 001 draft</a></li>
+        <li><a href="../../operations/launch-readiness.md">Launch readiness checklist</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

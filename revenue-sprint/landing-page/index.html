@@ -195,6 +195,13 @@
       color: var(--accent-dark);
     }
 
+    .stack {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 28px;
+    }
+
     @media (max-width: 860px) {
       .hero-copy,
       .hero-card,
@@ -203,6 +210,10 @@
       }
 
       .meta {
+        grid-template-columns: 1fr;
+      }
+
+      .stack {
         grid-template-columns: 1fr;
       }
     }
@@ -295,8 +306,32 @@
       </article>
     </section>
 
+    <section class="stack">
+      <article class="info-card">
+        <div class="eyebrow">Newsletter</div>
+        <h3 style="margin-top:14px;">Get unusually useful travel recovery insights</h3>
+        <p class="subtle" style="margin-top:12px;">
+          JetLag's newsletter is built for travelers who want sharper time-zone performance, not generic wellness fluff. Expect tactical playbooks, myth-breakers, and real-world travel systems.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="mailto:lexihallxo@gmail.com?subject=Subscribe%20me%20to%20JetLag">Join The Newsletter</a>
+        </div>
+      </article>
+
+      <article class="info-card">
+        <div class="eyebrow">Feedback</div>
+        <h3 style="margin-top:14px;">Tell us where travel recovery breaks down for you</h3>
+        <p class="subtle" style="margin-top:12px;">
+          Planning a trip soon, tried another jet lag tool, or hate how current advice works in real life? We want that feedback. It directly shapes JetLag.
+        </p>
+        <div class="actions">
+          <a class="button secondary" href="mailto:lexihallxo@gmail.com?subject=JetLag%20feedback">Send Feedback</a>
+        </div>
+      </article>
+    </section>
+
     <div class="footer-note">
-      Early launch version: a concierge service powered by JetLag's method. For questions or bookings, email <strong>lexihallxo@gmail.com</strong>.
+      Early launch version: a concierge service powered by JetLag's method. Replace the current email buttons with your live payment, newsletter signup, and feedback form links when they are ready. For now, bookings and replies go to <strong>lexihallxo@gmail.com</strong>.
     </div>
   </main>
 </body>
