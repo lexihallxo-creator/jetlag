@@ -28,6 +28,6 @@ End with one sentence that reinforces JetLag's point of view.
 
 Use one:
 
-- Reply with your upcoming route and I’ll tell you the first thing I’d change.
+- Reply with your upcoming route and I'll tell you the first thing I'd change.
 - Forward this to someone flying soon.
 - If you have a trip in the next 7 days, book a JetLag Express plan.

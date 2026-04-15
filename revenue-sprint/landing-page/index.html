@@ -13,13 +13,10 @@
       --accent: #0f766e;
       --accent-dark: #0b5c56;
       --line: rgba(24, 34, 47, 0.12);
-      --warm: #f59e0b;
       --shadow: 0 24px 60px rgba(24, 34, 47, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -43,8 +40,6 @@
       border-radius: 28px;
       box-shadow: var(--shadow);
       padding: 32px;
-      overflow: hidden;
-      position: relative;
     }
 
     .eyebrow {
@@ -58,11 +53,7 @@
       text-transform: uppercase;
     }
 
-    h1, h2, h3 {
-      margin: 0;
-      line-height: 1.05;
-      font-weight: 600;
-    }
+    h1, h2, h3 { margin: 0; line-height: 1.05; font-weight: 600; }
 
     h1 {
       margin-top: 20px;
@@ -79,19 +70,32 @@
     }
 
     .hero-grid,
-    .section-grid {
+    .section-grid,
+    .stack,
+    .placeholder-grid {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
       gap: 20px;
     }
 
-    .hero-copy {
-      grid-column: span 7;
+    .hero-grid,
+    .section-grid {
+      grid-template-columns: repeat(12, 1fr);
     }
+
+    .stack {
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 28px;
+    }
+
+    .placeholder-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 28px;
+    }
+
+    .hero-copy { grid-column: span 7; }
 
     .hero-card {
       grid-column: span 5;
-      align-self: stretch;
       background: #fff;
       border: 1px solid var(--line);
       border-radius: 24px;
@@ -105,6 +109,7 @@
 
     .subtle {
       color: var(--muted);
+      line-height: 1.7;
     }
 
     .actions {
@@ -145,20 +150,21 @@
     }
 
     .meta-card,
-    .info-card {
-      background: rgba(255, 255, 255, 0.8);
+    .info-card,
+    .placeholder-card {
+      background: rgba(255, 255, 255, 0.84);
       border: 1px solid var(--line);
       border-radius: 20px;
       padding: 18px;
     }
 
-    section {
-      margin-top: 28px;
+    .placeholder-card {
+      border-style: dashed;
+      border-color: rgba(24, 34, 47, 0.22);
     }
 
-    .section-grid > * {
-      grid-column: span 4;
-    }
+    section { margin-top: 28px; }
+    .section-grid > * { grid-column: span 4; }
 
     ul {
       padding-left: 18px;
@@ -187,19 +193,23 @@
       font-weight: 700;
     }
 
+    code {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: rgba(24, 34, 47, 0.06);
+      color: var(--accent-dark);
+      font-size: 0.88rem;
+      word-break: break-all;
+    }
+
     .footer-note {
       margin-top: 28px;
       padding: 18px 20px;
       border-radius: 20px;
       background: rgba(15, 118, 110, 0.08);
       color: var(--accent-dark);
-    }
-
-    .stack {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-top: 28px;
     }
 
     @media (max-width: 860px) {
@@ -209,11 +219,9 @@
         grid-column: 1 / -1;
       }
 
-      .meta {
-        grid-template-columns: 1fr;
-      }
-
-      .stack {
+      .meta,
+      .stack,
+      .placeholder-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -230,7 +238,7 @@
             JetLag Express turns your upcoming itinerary into a personalized recovery plan for sleep, light, caffeine, and arrival timing. You send the trip details. We send back a clear plan you can actually follow.
           </p>
           <div class="actions">
-            <a class="button primary" href="mailto:lexihallxo@gmail.com?subject=JetLag%20Express%20Plan">Book My Plan</a>
+            <a class="button primary" href="https://YOUR_PAYMENT_LINK_HERE">Book My Plan</a>
             <a class="button secondary" href="#how-it-works">How It Works</a>
           </div>
           <div class="meta">
@@ -259,7 +267,7 @@
             <li>Caffeine and arrival-day recommendations</li>
             <li>One rewrite if your itinerary changes</li>
           </ul>
-          <a class="button primary" style="width:100%; margin-top:12px;" href="mailto:lexihallxo@gmail.com?subject=I%20want%20JetLag%20Express">Get Started</a>
+          <a class="button primary" style="width:100%; margin-top:12px;" href="https://YOUR_PAYMENT_LINK_HERE">Get Started</a>
         </aside>
       </div>
     </section>
@@ -314,7 +322,7 @@
           JetLag's newsletter is built for travelers who want sharper time-zone performance, not generic wellness fluff. Expect tactical playbooks, myth-breakers, and real-world travel systems.
         </p>
         <div class="actions">
-          <a class="button primary" href="mailto:lexihallxo@gmail.com?subject=Subscribe%20me%20to%20JetLag">Join The Newsletter</a>
+          <a class="button primary" href="https://YOUR_NEWSLETTER_SIGNUP_URL_HERE">Join The Newsletter</a>
         </div>
       </article>
 
@@ -325,13 +333,31 @@
           Planning a trip soon, tried another jet lag tool, or hate how current advice works in real life? We want that feedback. It directly shapes JetLag.
         </p>
         <div class="actions">
-          <a class="button secondary" href="mailto:lexihallxo@gmail.com?subject=JetLag%20feedback">Send Feedback</a>
+          <a class="button secondary" href="https://YOUR_FEEDBACK_FORM_URL_HERE">Send Feedback</a>
         </div>
       </article>
     </section>
 
+    <section class="placeholder-grid">
+      <article class="placeholder-card">
+        <div class="eyebrow">Payment Link</div>
+        <h3 style="margin-top:14px;">Replace the booking URL</h3>
+        <code>https://YOUR_PAYMENT_LINK_HERE</code>
+      </article>
+      <article class="placeholder-card">
+        <div class="eyebrow">Newsletter Link</div>
+        <h3 style="margin-top:14px;">Replace the signup URL</h3>
+        <code>https://YOUR_NEWSLETTER_SIGNUP_URL_HERE</code>
+      </article>
+      <article class="placeholder-card">
+        <div class="eyebrow">Feedback Link</div>
+        <h3 style="margin-top:14px;">Replace the feedback form URL</h3>
+        <code>https://YOUR_FEEDBACK_FORM_URL_HERE</code>
+      </article>
+    </section>
+
     <div class="footer-note">
-      Early launch version: a concierge service powered by JetLag's method. Replace the current email buttons with your live payment, newsletter signup, and feedback form links when they are ready. For now, bookings and replies go to <strong>lexihallxo@gmail.com</strong>.
+      Early launch version: a concierge service powered by JetLag's method. This page is wired with clear placeholders for your payment, newsletter, and feedback URLs. Support email: <strong>lexihallxo@gmail.com</strong>.
     </div>
   </main>
 </body>
