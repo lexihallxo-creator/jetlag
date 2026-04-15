@@ -466,6 +466,109 @@
       line-height: 1.75;
     }
 
+    .planner {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .planner-card {
+      position: relative;
+      border-radius: 26px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(245,236,226,0.9) 100%);
+      box-shadow: var(--shadow-mid);
+      padding: 22px;
+    }
+
+    .planner-card::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(26, 26, 26, 0.05);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .planner-copy {
+      color: var(--muted);
+      line-height: 1.75;
+      margin-top: 12px;
+    }
+
+    .planner-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field span {
+      color: var(--muted);
+      font-size: 0.84rem;
+      letter-spacing: 0.06em;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(26, 26, 26, 0.08);
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--text);
+      font: inherit;
+      box-shadow: var(--shadow-soft);
+      text-transform: lowercase;
+    }
+
+    .planner-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .route-result {
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .result-box {
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(26, 26, 26, 0.06);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .result-box strong {
+      display: block;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .result-box span,
+    .result-box ul {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .result-box ul {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
     @keyframes drift {
       from {
         transform: translateX(0);
@@ -479,7 +582,8 @@
       .hero-grid,
       .grid-4,
       .outcomes,
-      .protocol-flow {
+      .protocol-flow,
+      .planner {
         grid-template-columns: 1fr 1fr;
       }
 
@@ -501,7 +605,9 @@
       .grid-4,
       .outcomes,
       .protocol-flow,
-      .mini-metrics {
+      .mini-metrics,
+      .planner,
+      .planner-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -567,6 +673,80 @@
             </article>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>preloaded worldwide airports + time zones</h2>
+          <p>
+            use the route planner to preview how on arrival thinks about departure, arrival, and time drift. the directory below is preloaded with major airport hubs across the globe and mapped to their time zones.
+          </p>
+        </div>
+        <span class="micro-pill">airport intelligence preview</span>
+      </div>
+
+      <div class="planner">
+        <article class="planner-card">
+          <div class="eyebrow">route input</div>
+          <p class="planner-copy">
+            start with departure and arrival airports. on arrival uses route, timezone shift, and your first important moment after landing to shape the arrival protocol™.
+          </p>
+
+          <div class="planner-grid">
+            <label class="field">
+              <span>departure airport</span>
+              <input id="departure-airport" list="airport-options" placeholder="search city, airport, or code" />
+            </label>
+            <label class="field">
+              <span>arrival airport</span>
+              <input id="arrival-airport" list="airport-options" placeholder="search city, airport, or code" />
+            </label>
+            <label class="field">
+              <span>first important moment</span>
+              <select id="arrival-goal">
+                <option value="meeting">meeting or presentation</option>
+                <option value="work">focused work block</option>
+                <option value="vacation">vacation day and energy</option>
+                <option value="founder">founder or executive travel</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>plan style</span>
+              <select id="plan-style">
+                <option value="balanced">balanced</option>
+                <option value="easy">easiest to follow</option>
+                <option value="aggressive">aggressive</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="planner-actions">
+            <button class="button primary" id="preview-route" type="button">preview arrival protocol</button>
+            <button class="button secondary" id="reset-route" type="button">reset route</button>
+          </div>
+
+          <datalist id="airport-options"></datalist>
+        </article>
+
+        <article class="planner-card">
+          <div class="eyebrow">route preview</div>
+          <div class="route-result">
+            <div class="result-box">
+              <strong id="route-summary">choose a departure and arrival airport</strong>
+              <span id="route-timezones">the preview will show route, time zones, and arrival drift here.</span>
+            </div>
+            <div class="result-box">
+              <strong>arrival protocol preview</strong>
+              <ul id="protocol-preview">
+                <li>pick a route to see the first protocol moves</li>
+                <li>the system will estimate your timezone drift</li>
+                <li>your selected travel goal will shape the guidance</li>
+              </ul>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -816,5 +996,173 @@
       <a href="./operations/founder-dashboard/index.html">open founder dashboard</a>
     </div>
   </div>
+  <script>
+    const airports = [
+      { city: "new york", airport: "john f kennedy international", code: "jfk", timezone: "america/new_york", offset: -5 },
+      { city: "newark", airport: "newark liberty international", code: "ewr", timezone: "america/new_york", offset: -5 },
+      { city: "boston", airport: "logan international", code: "bos", timezone: "america/new_york", offset: -5 },
+      { city: "washington", airport: "dulles international", code: "iad", timezone: "america/new_york", offset: -5 },
+      { city: "atlanta", airport: "hartsfield jackson", code: "atl", timezone: "america/new_york", offset: -5 },
+      { city: "miami", airport: "miami international", code: "mia", timezone: "america/new_york", offset: -5 },
+      { city: "chicago", airport: "ohare international", code: "ord", timezone: "america/chicago", offset: -6 },
+      { city: "dallas", airport: "dfw international", code: "dfw", timezone: "america/chicago", offset: -6 },
+      { city: "denver", airport: "denver international", code: "den", timezone: "america/denver", offset: -7 },
+      { city: "phoenix", airport: "phoenix sky harbor", code: "phx", timezone: "america/phoenix", offset: -7 },
+      { city: "los angeles", airport: "los angeles international", code: "lax", timezone: "america/los_angeles", offset: -8 },
+      { city: "san francisco", airport: "san francisco international", code: "sfo", timezone: "america/los_angeles", offset: -8 },
+      { city: "seattle", airport: "seattle tacoma", code: "sea", timezone: "america/los_angeles", offset: -8 },
+      { city: "honolulu", airport: "daniel k inouye international", code: "hnl", timezone: "pacific/honolulu", offset: -10 },
+      { city: "toronto", airport: "pearson international", code: "yyz", timezone: "america/toronto", offset: -5 },
+      { city: "vancouver", airport: "vancouver international", code: "yvr", timezone: "america/vancouver", offset: -8 },
+      { city: "mexico city", airport: "benito juarez international", code: "mex", timezone: "america/mexico_city", offset: -6 },
+      { city: "bogota", airport: "el dorado international", code: "bog", timezone: "america/bogota", offset: -5 },
+      { city: "lima", airport: "jorge chavez international", code: "lim", timezone: "america/lima", offset: -5 },
+      { city: "sao paulo", airport: "guarulhos international", code: "gru", timezone: "america/sao_paulo", offset: -3 },
+      { city: "buenos aires", airport: "ezeiza international", code: "eze", timezone: "america/argentina/buenos_aires", offset: -3 },
+      { city: "santiago", airport: "arturo merino benitez", code: "scl", timezone: "america/santiago", offset: -4 },
+      { city: "reykjavik", airport: "keflavik international", code: "kef", timezone: "atlantic/reykjavik", offset: 0 },
+      { city: "dublin", airport: "dublin airport", code: "dub", timezone: "europe/dublin", offset: 0 },
+      { city: "lisbon", airport: "humberto delgado", code: "lis", timezone: "europe/lisbon", offset: 0 },
+      { city: "london", airport: "heathrow", code: "lhr", timezone: "europe/london", offset: 0 },
+      { city: "manchester", airport: "manchester airport", code: "man", timezone: "europe/london", offset: 0 },
+      { city: "paris", airport: "charles de gaulle", code: "cdg", timezone: "europe/paris", offset: 1 },
+      { city: "amsterdam", airport: "schiphol", code: "ams", timezone: "europe/amsterdam", offset: 1 },
+      { city: "brussels", airport: "brussels airport", code: "bru", timezone: "europe/brussels", offset: 1 },
+      { city: "frankfurt", airport: "frankfurt airport", code: "fra", timezone: "europe/berlin", offset: 1 },
+      { city: "munich", airport: "munich airport", code: "muc", timezone: "europe/berlin", offset: 1 },
+      { city: "zurich", airport: "zurich airport", code: "zrh", timezone: "europe/zurich", offset: 1 },
+      { city: "geneva", airport: "geneva airport", code: "gva", timezone: "europe/zurich", offset: 1 },
+      { city: "madrid", airport: "adolfo suarez madrid barajas", code: "mad", timezone: "europe/madrid", offset: 1 },
+      { city: "barcelona", airport: "el prat", code: "bcn", timezone: "europe/madrid", offset: 1 },
+      { city: "rome", airport: "fiumicino", code: "fco", timezone: "europe/rome", offset: 1 },
+      { city: "milan", airport: "malpensa", code: "mxp", timezone: "europe/rome", offset: 1 },
+      { city: "vienna", airport: "vienna international", code: "vie", timezone: "europe/vienna", offset: 1 },
+      { city: "copenhagen", airport: "copenhagen airport", code: "cph", timezone: "europe/copenhagen", offset: 1 },
+      { city: "stockholm", airport: "arlanda", code: "arn", timezone: "europe/stockholm", offset: 1 },
+      { city: "oslo", airport: "gardermoen", code: "osl", timezone: "europe/oslo", offset: 1 },
+      { city: "helsinki", airport: "helsinki vantaa", code: "hel", timezone: "europe/helsinki", offset: 2 },
+      { city: "athens", airport: "athens international", code: "ath", timezone: "europe/athens", offset: 2 },
+      { city: "istanbul", airport: "istanbul airport", code: "ist", timezone: "europe/istanbul", offset: 3 },
+      { city: "tel aviv", airport: "ben gurion", code: "tlv", timezone: "asia/jerusalem", offset: 2 },
+      { city: "cairo", airport: "cairo international", code: "cai", timezone: "africa/cairo", offset: 2 },
+      { city: "casablanca", airport: "mohammed v", code: "cmn", timezone: "africa/casablanca", offset: 1 },
+      { city: "lagos", airport: "murtala muhammed", code: "los", timezone: "africa/lagos", offset: 1 },
+      { city: "nairobi", airport: "jomo kenyatta", code: "nbo", timezone: "africa/nairobi", offset: 3 },
+      { city: "johannesburg", airport: "or tambo", code: "jnb", timezone: "africa/johannesburg", offset: 2 },
+      { city: "cape town", airport: "cape town international", code: "cpt", timezone: "africa/johannesburg", offset: 2 },
+      { city: "dubai", airport: "dubai international", code: "dxb", timezone: "asia/dubai", offset: 4 },
+      { city: "abu dhabi", airport: "zayed international", code: "auh", timezone: "asia/dubai", offset: 4 },
+      { city: "doha", airport: "hamad international", code: "doh", timezone: "asia/qatar", offset: 3 },
+      { city: "riyadh", airport: "king khalid international", code: "ruh", timezone: "asia/riyadh", offset: 3 },
+      { city: "mumbai", airport: "chhatrapati shivaji maharaj", code: "bom", timezone: "asia/kolkata", offset: 5.5 },
+      { city: "delhi", airport: "indira gandhi international", code: "del", timezone: "asia/kolkata", offset: 5.5 },
+      { city: "bangalore", airport: "kempegowda international", code: "blr", timezone: "asia/kolkata", offset: 5.5 },
+      { city: "singapore", airport: "changi", code: "sin", timezone: "asia/singapore", offset: 8 },
+      { city: "bangkok", airport: "suvarnabhumi", code: "bkk", timezone: "asia/bangkok", offset: 7 },
+      { city: "kuala lumpur", airport: "kuala lumpur international", code: "kul", timezone: "asia/kuala_lumpur", offset: 8 },
+      { city: "jakarta", airport: "soekarno hatta", code: "cgk", timezone: "asia/jakarta", offset: 7 },
+      { city: "manila", airport: "ninoy aquino international", code: "mnl", timezone: "asia/manila", offset: 8 },
+      { city: "hong kong", airport: "hong kong international", code: "hkg", timezone: "asia/hong_kong", offset: 8 },
+      { city: "taipei", airport: "taoyuan international", code: "tpe", timezone: "asia/taipei", offset: 8 },
+      { city: "seoul", airport: "incheon", code: "icn", timezone: "asia/seoul", offset: 9 },
+      { city: "tokyo", airport: "haneda", code: "hnd", timezone: "asia/tokyo", offset: 9 },
+      { city: "tokyo", airport: "narita", code: "nrt", timezone: "asia/tokyo", offset: 9 },
+      { city: "osaka", airport: "kansai international", code: "kix", timezone: "asia/tokyo", offset: 9 },
+      { city: "beijing", airport: "beijing capital", code: "pek", timezone: "asia/shanghai", offset: 8 },
+      { city: "shanghai", airport: "pudong", code: "pvg", timezone: "asia/shanghai", offset: 8 },
+      { city: "guangzhou", airport: "baiyun international", code: "can", timezone: "asia/shanghai", offset: 8 },
+      { city: "shenzhen", airport: "baoan international", code: "szx", timezone: "asia/shanghai", offset: 8 },
+      { city: "sydney", airport: "sydney kingsford smith", code: "syd", timezone: "australia/sydney", offset: 10 },
+      { city: "melbourne", airport: "melbourne airport", code: "mel", timezone: "australia/melbourne", offset: 10 },
+      { city: "brisbane", airport: "brisbane airport", code: "bne", timezone: "australia/brisbane", offset: 10 },
+      { city: "perth", airport: "perth airport", code: "per", timezone: "australia/perth", offset: 8 },
+      { city: "auckland", airport: "auckland airport", code: "akl", timezone: "pacific/auckland", offset: 12 }
+    ];
+
+    const airportLabel = (airport) => `${airport.city} - ${airport.airport} - ${airport.code} - ${airport.timezone}`;
+
+    const datalist = document.getElementById("airport-options");
+    datalist.innerHTML = airports
+      .map((airport) => `<option value="${airportLabel(airport)}"></option>`)
+      .join("");
+
+    const departureInput = document.getElementById("departure-airport");
+    const arrivalInput = document.getElementById("arrival-airport");
+    const goalInput = document.getElementById("arrival-goal");
+    const planStyleInput = document.getElementById("plan-style");
+    const previewButton = document.getElementById("preview-route");
+    const resetButton = document.getElementById("reset-route");
+    const routeSummary = document.getElementById("route-summary");
+    const routeTimezones = document.getElementById("route-timezones");
+    const protocolPreview = document.getElementById("protocol-preview");
+
+    const findAirport = (value) => airports.find((airport) => airportLabel(airport) === value.trim());
+
+    const describeShift = (hours) => {
+      const absolute = Math.abs(hours);
+      if (absolute === 0) return "same timezone";
+      const direction = hours > 0 ? "ahead" : "behind";
+      return `${absolute} hour${absolute === 1 ? "" : "s"} ${direction}`;
+    };
+
+    const buildProtocol = (shift, goal, style) => {
+      const longHaul = Math.abs(shift) >= 5;
+      const goalMap = {
+        meeting: "protect the first meeting and keep your first night from collapsing",
+        work: "anchor the first focused work block after arrival",
+        vacation: "keep energy usable for the first full day on the ground",
+        founder: "protect decision quality during the first 48 hours"
+      };
+      const styleMap = {
+        balanced: "balanced and realistic",
+        easy: "lightweight and easiest to follow",
+        aggressive: "more aggressive timing shift"
+      };
+
+      return [
+        `use a ${styleMap[style]} protocol built to ${goalMap[goal]}`,
+        longHaul ? "start shifting light and meal timing before departure if possible" : "keep the plan simple and focus on arrival-day timing anchors",
+        shift > 0 ? "treat destination bedtime as the main target and avoid late naps" : shift < 0 ? "delay extra sleep pressure until the new local evening" : "keep light, meals, and sleep stable so you do not create unnecessary drift",
+        "on arrival, use light, food timing, and movement as the first control levers"
+      ];
+    };
+
+    const renderPreview = () => {
+      const departure = findAirport(departureInput.value);
+      const arrival = findAirport(arrivalInput.value);
+
+      if (!departure || !arrival) {
+        routeSummary.textContent = "choose matching airports from the worldwide directory";
+        routeTimezones.textContent = "pick both airports from the search list to preview the timezone shift.";
+        protocolPreview.innerHTML = `
+          <li>choose a valid departure airport</li>
+          <li>choose a valid arrival airport</li>
+          <li>the route preview will estimate arrival drift and show the first protocol moves</li>
+        `;
+        return;
+      }
+
+      const shift = arrival.offset - departure.offset;
+      routeSummary.textContent = `${departure.city} to ${arrival.city} - ${describeShift(shift)}`;
+      routeTimezones.textContent = `${departure.code} (${departure.timezone}) to ${arrival.code} (${arrival.timezone}) - route built for ${goalInput.value} travel`;
+      protocolPreview.innerHTML = buildProtocol(shift, goalInput.value, planStyleInput.value)
+        .map((item) => `<li>${item}</li>`)
+        .join("");
+    };
+
+    previewButton.addEventListener("click", renderPreview);
+    resetButton.addEventListener("click", () => {
+      departureInput.value = "";
+      arrivalInput.value = "";
+      goalInput.value = "meeting";
+      planStyleInput.value = "balanced";
+      renderPreview();
+    });
+
+    departureInput.addEventListener("change", renderPreview);
+    arrivalInput.addEventListener("change", renderPreview);
+    goalInput.addEventListener("change", renderPreview);
+    planStyleInput.addEventListener("change", renderPreview);
+  </script>
 </body>
 </html>
