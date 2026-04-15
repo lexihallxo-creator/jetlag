@@ -3,362 +3,656 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JetLag Express Plan</title>
+  <title>jetlag</title>
   <style>
     :root {
-      --bg: #f4efe6;
-      --panel: rgba(255, 251, 245, 0.92);
-      --ink: #18222f;
-      --muted: #5c6672;
-      --accent: #0f766e;
-      --accent-dark: #0b5c56;
-      --line: rgba(24, 34, 47, 0.12);
-      --shadow: 0 24px 60px rgba(24, 34, 47, 0.12);
+      --bg: #efe5d7;
+      --bg-soft: #f7f1e7;
+      --panel: rgba(255, 251, 245, 0.94);
+      --panel-strong: #fffdf9;
+      --ink: #2d261f;
+      --muted: #766a5c;
+      --accent: #8f6f4d;
+      --accent-soft: #dbc7af;
+      --line: rgba(78, 61, 42, 0.12);
+      --shadow-lg: 0 30px 80px rgba(83, 64, 41, 0.16);
+      --shadow-md: 0 20px 40px rgba(83, 64, 41, 0.12);
+      --shadow-sm: 0 10px 24px rgba(83, 64, 41, 0.1);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "georgia", "times new roman", serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(15, 118, 110, 0.16), transparent 32%),
-        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+        radial-gradient(circle at top left, rgba(219, 199, 175, 0.8), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.9), transparent 24%),
+        linear-gradient(180deg, #fbf7f1 0%, var(--bg) 100%);
+      text-transform: lowercase;
     }
 
-    .page {
-      width: min(1120px, calc(100% - 32px));
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(1220px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 40px 0 72px;
+      padding: 24px 0 72px;
+    }
+
+    .nav,
+    .hero,
+    .panel,
+    .card,
+    .wire,
+    .quote,
+    .stack-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .nav::before,
+    .hero::before,
+    .panel::before,
+    .card::before,
+    .wire::before,
+    .quote::before,
+    .stack-card::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(143, 111, 77, 0.08);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .nav,
+    .hero,
+    .panel {
+      border-radius: 30px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-links a,
+    .nav-brand,
+    .chip {
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(78, 61, 42, 0.08);
+      box-shadow: var(--shadow-sm);
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      background: linear-gradient(180deg, #fffdf9 0%, #f2e7d8 100%);
     }
 
     .hero {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      padding: 32px;
+      overflow: hidden;
+      padding: 30px;
+      box-shadow: var(--shadow-lg);
+      background:
+        linear-gradient(160deg, rgba(255, 252, 247, 0.98) 0%, rgba(245, 237, 225, 0.92) 100%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: stretch;
     }
 
     .eyebrow {
-      display: inline-block;
-      padding: 8px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(15, 118, 110, 0.1);
-      color: var(--accent-dark);
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      background: rgba(143, 111, 77, 0.1);
+      border: 1px solid rgba(143, 111, 77, 0.12);
+      box-shadow: var(--shadow-sm);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
     }
 
-    h1, h2, h3 { margin: 0; line-height: 1.05; font-weight: 600; }
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
 
     h1 {
-      margin-top: 20px;
-      max-width: 9ch;
-      font-size: clamp(2.7rem, 8vw, 5.6rem);
+      margin-top: 18px;
+      max-width: 10ch;
+      font-size: clamp(3rem, 7vw, 6.4rem);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      line-height: 1.15;
     }
 
     .lead {
-      max-width: 620px;
-      margin-top: 20px;
-      font-size: 1.15rem;
-      line-height: 1.7;
+      max-width: 640px;
+      margin-top: 18px;
       color: var(--muted);
+      line-height: 1.8;
+      font-size: 1.08rem;
     }
 
-    .hero-grid,
-    .section-grid,
-    .stack,
-    .placeholder-grid {
-      display: grid;
-      gap: 20px;
-    }
-
-    .hero-grid,
-    .section-grid {
-      grid-template-columns: repeat(12, 1fr);
-    }
-
-    .stack {
-      grid-template-columns: repeat(2, 1fr);
-      margin-top: 28px;
-    }
-
-    .placeholder-grid {
-      grid-template-columns: repeat(3, 1fr);
-      margin-top: 28px;
-    }
-
-    .hero-copy { grid-column: span 7; }
-
-    .hero-card {
-      grid-column: span 5;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 24px;
-    }
-
-    .price {
-      font-size: 3rem;
-      margin-top: 10px;
-    }
-
-    .subtle {
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .actions {
+    .button-row,
+    .mini-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 28px;
+      margin-top: 24px;
     }
 
     .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 48px;
+      min-height: 50px;
       padding: 0 18px;
       border-radius: 999px;
-      text-decoration: none;
-      font-weight: 600;
       border: 1px solid transparent;
-    }
-
-    .button.primary {
-      background: var(--accent);
-      color: white;
-    }
-
-    .button.secondary {
-      border-color: var(--line);
-      color: var(--ink);
-      background: transparent;
-    }
-
-    .meta {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 22px;
-    }
-
-    .meta-card,
-    .info-card,
-    .placeholder-card {
-      background: rgba(255, 255, 255, 0.84);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-    }
-
-    .placeholder-card {
-      border-style: dashed;
-      border-color: rgba(24, 34, 47, 0.22);
-    }
-
-    section { margin-top: 28px; }
-    .section-grid > * { grid-column: span 4; }
-
-    ul {
-      padding-left: 18px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .steps > * {
-      counter-increment: step;
-      position: relative;
-      padding-top: 56px;
-    }
-
-    .steps > *::before {
-      content: counter(step);
-      position: absolute;
-      top: 18px;
-      left: 18px;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: rgba(245, 158, 11, 0.18);
-      color: #8a5600;
-      display: grid;
-      place-items: center;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
       font-weight: 700;
     }
 
-    code {
+    .button.primary {
+      background: linear-gradient(180deg, #9a7752 0%, #866644 100%);
+      color: #fffaf4;
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.82);
+      border-color: rgba(78, 61, 42, 0.1);
+    }
+
+    .mini-row {
+      gap: 10px;
+    }
+
+    .chip {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .hero-side,
+    .quote,
+    .card,
+    .stack-card,
+    .wire {
+      border-radius: 26px;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 16px;
+    }
+
+    .quote,
+    .card,
+    .stack-card,
+    .wire {
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 241, 232, 0.9) 100%);
+    }
+
+    .quote {
+      transform: perspective(1200px) rotateX(3deg) rotateY(-4deg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .quote p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-top: 12px;
+    }
+
+    .quote strong {
+      display: block;
+      font-size: 2.4rem;
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(78, 61, 42, 0.08);
+      box-shadow: var(--shadow-sm);
+      transform: translateZ(0);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.6rem;
+      letter-spacing: -0.04em;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.92rem;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .panel {
+      padding: 24px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-end;
+    }
+
+    .section-head p {
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .grid-3,
+    .grid-4,
+    .wire-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .wire-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card,
+    .stack-card,
+    .wire {
+      transform: perspective(1200px) rotateX(3deg);
+    }
+
+    .card p,
+    .stack-card p,
+    .wire p {
+      margin-top: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .card ul,
+    .stack-card ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .price-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      padding: 10px 14px;
+      margin-top: 14px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #fff7ee 0%, #ead7c0 100%);
+      border: 1px solid rgba(143, 111, 77, 0.12);
+      box-shadow: var(--shadow-sm);
+      font-weight: 700;
+    }
+
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .journey .card {
+      min-height: 220px;
+    }
+
+    .wire code {
       display: inline-block;
-      margin-top: 10px;
-      padding: 6px 8px;
-      border-radius: 10px;
-      background: rgba(24, 34, 47, 0.06);
-      color: var(--accent-dark);
-      font-size: 0.88rem;
+      margin-top: 12px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(78, 61, 42, 0.06);
+      color: var(--accent);
+      font-size: 0.82rem;
       word-break: break-all;
     }
 
     .footer-note {
-      margin-top: 28px;
+      margin-top: 20px;
       padding: 18px 20px;
-      border-radius: 20px;
-      background: rgba(15, 118, 110, 0.08);
-      color: var(--accent-dark);
+      border-radius: 22px;
+      background: rgba(255, 248, 238, 0.8);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      line-height: 1.7;
+      box-shadow: var(--shadow-sm);
     }
 
-    @media (max-width: 860px) {
-      .hero-copy,
-      .hero-card,
-      .section-grid > * {
-        grid-column: 1 / -1;
+    @media (max-width: 1050px) {
+      .hero-grid,
+      .grid-4,
+      .journey,
+      .wire-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .meta,
-      .stack,
-      .placeholder-grid {
+      .grid-3 {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid,
+      .grid-4,
+      .journey,
+      .wire-grid,
+      .stats,
+      .stack {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head,
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
-  <main class="page">
-    <section class="hero">
+  <div class="shell">
+    <nav class="nav">
+      <div class="nav-brand">jetlag</div>
+      <div class="nav-links">
+        <a href="#offer">offer</a>
+        <a href="#plans">plans</a>
+        <a href="#newsletter">newsletter</a>
+        <a href="#wire-up">wire up</a>
+        <a href="./operations/founder-dashboard/index.html">internal dashboard</a>
+      </div>
+    </nav>
+
+    <section class="hero" id="offer">
       <div class="hero-grid">
-        <div class="hero-copy">
-          <div class="eyebrow">Manual Concierge Offer</div>
-          <h1>Land functional, not wrecked.</h1>
+        <div>
+          <div class="eyebrow">travel recovery, rebuilt</div>
+          <h1>the jetlag website is here.</h1>
           <p class="lead">
-            JetLag Express turns your upcoming itinerary into a personalized recovery plan for sleep, light, caffeine, and arrival timing. You send the trip details. We send back a clear plan you can actually follow.
+            jetlag is a beige-and-white launch site for a travel recovery company built to help people land functional, clear, and useful after crossing time zones. right now the front door sells a concierge plan, grows the newsletter, collects feedback, and carries the product story forward.
           </p>
-          <div class="actions">
-            <a class="button primary" href="https://YOUR_PAYMENT_LINK_HERE">Book My Plan</a>
-            <a class="button secondary" href="#how-it-works">How It Works</a>
+          <div class="button-row">
+            <a class="button primary" href="https://YOUR_PAYMENT_LINK_HERE">book jetlag express</a>
+            <a class="button secondary" href="https://YOUR_NEWSLETTER_SIGNUP_URL_HERE">join the newsletter</a>
+            <a class="button secondary" href="https://YOUR_FEEDBACK_FORM_URL_HERE">send feedback</a>
           </div>
-          <div class="meta">
-            <div class="meta-card">
-              <strong>Best for</strong>
-              <p class="subtle">Travelers crossing multiple time zones in the next 7 days.</p>
-            </div>
-            <div class="meta-card">
-              <strong>Delivery</strong>
-              <p class="subtle">Fast turnaround with a practical before, during, and after flight plan.</p>
-            </div>
-            <div class="meta-card">
-              <strong>Focus</strong>
-              <p class="subtle">Sleep timing, light exposure, caffeine timing, and day-one recovery.</p>
-            </div>
+          <div class="mini-row">
+            <span class="chip">all visible copy is lowercase</span>
+            <span class="chip">beige + white 3d visual system</span>
+            <span class="chip">built for revenue + audience + feedback</span>
           </div>
         </div>
 
-        <aside class="hero-card">
-          <div class="eyebrow">Launch Offer</div>
-          <h2 class="price">$29</h2>
-          <p class="subtle">Personalized JetLag Express Plan for one upcoming trip.</p>
-          <ul>
-            <li>Trip-specific recovery plan</li>
-            <li>Sleep and light timing guidance</li>
-            <li>Caffeine and arrival-day recommendations</li>
-            <li>One rewrite if your itinerary changes</li>
-          </ul>
-          <a class="button primary" style="width:100%; margin-top:12px;" href="https://YOUR_PAYMENT_LINK_HERE">Get Started</a>
-        </aside>
+        <div class="hero-side">
+          <article class="quote">
+            <strong>land functional.</strong>
+            <p>
+              not wrecked. not foggy. not improvising your first 48 hours after landing. jetlag turns itinerary details into a more useful recovery system before the full app even ships.
+            </p>
+          </article>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>$29</strong>
+              <span>starter concierge offer for a personalized trip plan</span>
+            </div>
+            <div class="stat">
+              <strong>$500m</strong>
+              <span>estimated market opportunity inside the business plan</span>
+            </div>
+            <div class="stat">
+              <strong>2x weekly</strong>
+              <span>newsletter rhythm with tactical issues and signal drops</span>
+            </div>
+            <div class="stat">
+              <strong>8:00 am</strong>
+              <span>daily scan already runs to surface growth and revenue opportunities</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="how-it-works" class="section-grid steps" style="counter-reset: step;">
-      <article class="info-card">
-        <h3>Share your trip</h3>
-        <p class="subtle">Send departure, arrival, destination, your normal sleep schedule, and any constraints.</p>
-      </article>
-      <article class="info-card">
-        <h3>Get your plan</h3>
-        <p class="subtle">Receive a clear pre-flight, flight-day, and arrival-day plan built around your trip.</p>
-      </article>
-      <article class="info-card">
-        <h3>Travel with less guesswork</h3>
-        <p class="subtle">Follow the plan instead of piecing together generic advice from articles and forums.</p>
-      </article>
-    </section>
-
-    <section class="section-grid">
-      <article class="info-card">
-        <h3>Who this is for</h3>
-        <ul>
-          <li>Business travelers with meetings soon after landing</li>
-          <li>International leisure travelers who want to enjoy the first days of the trip</li>
-          <li>Frequent flyers tired of guessing what works</li>
-        </ul>
-      </article>
-      <article class="info-card">
-        <h3>What you get</h3>
-        <ul>
-          <li>Simple action schedule matched to your route</li>
-          <li>Guidance for sleep, light, and caffeine timing</li>
-          <li>Arrival-day strategy for energy and recovery</li>
-        </ul>
-      </article>
-      <article class="info-card">
-        <h3>Why now</h3>
-        <ul>
-          <li>Useful before a full app even exists</li>
-          <li>Faster than learning a new tool</li>
-          <li>Built around your actual trip, not generic advice</li>
-        </ul>
-      </article>
-    </section>
-
-    <section class="stack">
-      <article class="info-card">
-        <div class="eyebrow">Newsletter</div>
-        <h3 style="margin-top:14px;">Get unusually useful travel recovery insights</h3>
-        <p class="subtle" style="margin-top:12px;">
-          JetLag's newsletter is built for travelers who want sharper time-zone performance, not generic wellness fluff. Expect tactical playbooks, myth-breakers, and real-world travel systems.
-        </p>
-        <div class="actions">
-          <a class="button primary" href="https://YOUR_NEWSLETTER_SIGNUP_URL_HERE">Join The Newsletter</a>
+    <section class="section panel" id="plans">
+      <div class="section-head">
+        <div>
+          <h2>the core plans, all in one place</h2>
+          <p>the website now reflects the actual launch model: revenue first, newsletter-driven trust, structured feedback, and a longer-term product ladder.</p>
         </div>
-      </article>
+        <span class="chip">solo founder, ai-first team</span>
+      </div>
 
-      <article class="info-card">
-        <div class="eyebrow">Feedback</div>
-        <h3 style="margin-top:14px;">Tell us where travel recovery breaks down for you</h3>
-        <p class="subtle" style="margin-top:12px;">
-          Planning a trip soon, tried another jet lag tool, or hate how current advice works in real life? We want that feedback. It directly shapes JetLag.
-        </p>
-        <div class="actions">
-          <a class="button secondary" href="https://YOUR_FEEDBACK_FORM_URL_HERE">Send Feedback</a>
-        </div>
-      </article>
+      <div class="grid-4">
+        <article class="card">
+          <h3>revenue plan</h3>
+          <p>sell jetlag express now as a manual concierge plan for people flying within the next 7 days.</p>
+          <div class="price-tag">$29 launch offer</div>
+          <ul>
+            <li>personalized sleep, light, and caffeine timing</li>
+            <li>fast turnaround</li>
+            <li>same-day sales workflow</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>newsletter plan</h3>
+          <p>grow a memorable audience asset with tactical travel recovery writing instead of generic wellness content.</p>
+          <ul>
+            <li>arrival autopsies</li>
+            <li>time-zone playbooks</li>
+            <li>contrarian myth-breakers</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>feedback plan</h3>
+          <p>collect pain points, objections, and request patterns directly from travelers so product and messaging get sharper each week.</p>
+          <ul>
+            <li>tally form for structured responses</li>
+            <li>csv tracker for themes</li>
+            <li>quote capture for future proof</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>product plan</h3>
+          <p>start with concierge outcomes, then grow into the free, core, and premium product ladder already mapped in the repo.</p>
+          <ul>
+            <li>free for top-of-funnel</li>
+            <li>core at $29.99/year</li>
+            <li>premium at $79.99/year</li>
+          </ul>
+        </article>
+      </div>
     </section>
 
-    <section class="placeholder-grid">
-      <article class="placeholder-card">
-        <div class="eyebrow">Payment Link</div>
-        <h3 style="margin-top:14px;">Replace the booking URL</h3>
-        <code>https://YOUR_PAYMENT_LINK_HERE</code>
-      </article>
-      <article class="placeholder-card">
-        <div class="eyebrow">Newsletter Link</div>
-        <h3 style="margin-top:14px;">Replace the signup URL</h3>
-        <code>https://YOUR_NEWSLETTER_SIGNUP_URL_HERE</code>
-      </article>
-      <article class="placeholder-card">
-        <div class="eyebrow">Feedback Link</div>
-        <h3 style="margin-top:14px;">Replace the feedback form URL</h3>
-        <code>https://YOUR_FEEDBACK_FORM_URL_HERE</code>
-      </article>
+    <section class="section panel">
+      <div class="section-head">
+        <div>
+          <h2>how the launch stack works</h2>
+          <p>this website is designed to do more than look good. it is built to move someone from curiosity into payment, newsletter signup, or direct product feedback.</p>
+        </div>
+        <span class="chip">lowercase across the site</span>
+      </div>
+
+      <div class="journey">
+        <article class="card">
+          <h3>01. attract</h3>
+          <p>bring people in through newsletter issues, daily scan insights, direct outreach, and social replies.</p>
+        </article>
+        <article class="card">
+          <h3>02. convert</h3>
+          <p>offer jetlag express as the immediate outcome for travelers with real upcoming trips.</p>
+        </article>
+        <article class="card">
+          <h3>03. learn</h3>
+          <p>route readers and buyers into feedback collection so the product and copy get smarter every cycle.</p>
+        </article>
+        <article class="card">
+          <h3>04. expand</h3>
+          <p>turn trust into newsletter growth, testimonials, referrals, and the longer-term product subscription path.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="newsletter">
+      <div class="section-head">
+        <div>
+          <h2>newsletter + growth engine</h2>
+          <p>the newsletter is positioned as a field guide for people who need to function across time zones. it is meant to feel unusually useful, save-worthy, and forwardable.</p>
+        </div>
+        <span class="chip">designed to create trust</span>
+      </div>
+
+      <div class="grid-3">
+        <article class="stack-card">
+          <h3>issue themes</h3>
+          <ul>
+            <li>why travelers lose the first 48 hours after landing</li>
+            <li>the new york to paris monday meeting playbook</li>
+            <li>the biggest lie in jet lag advice</li>
+            <li>the founder travel system</li>
+          </ul>
+        </article>
+
+        <article class="stack-card">
+          <h3>why it feels unique</h3>
+          <ul>
+            <li>travel performance instead of lifestyle fluff</li>
+            <li>named frameworks and playbooks</li>
+            <li>real scenarios, not abstract tips</li>
+            <li>direct bridge into concierge revenue</li>
+          </ul>
+        </article>
+
+        <article class="stack-card">
+          <h3>main calls to action</h3>
+          <ul>
+            <li>join the newsletter</li>
+            <li>reply with your route</li>
+            <li>book jetlag express</li>
+            <li>forward this to someone flying soon</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panel" id="wire-up">
+      <div class="section-head">
+        <div>
+          <h2>wire this up and publish</h2>
+          <p>the final live system still needs real links from your external tools. those placeholders are already embedded here so replacing them will take seconds once the accounts are ready.</p>
+        </div>
+        <span class="chip">ready for github pages</span>
+      </div>
+
+      <div class="wire-grid">
+        <article class="wire">
+          <h3>payment link</h3>
+          <p>create a stripe or gumroad link for jetlag express and replace the booking url.</p>
+          <code>https://YOUR_PAYMENT_LINK_HERE</code>
+        </article>
+
+        <article class="wire">
+          <h3>newsletter link</h3>
+          <p>create a beehiiv, substack, or convertkit signup form and replace the newsletter url.</p>
+          <code>https://YOUR_NEWSLETTER_SIGNUP_URL_HERE</code>
+        </article>
+
+        <article class="wire">
+          <h3>feedback link</h3>
+          <p>create a tally form for traveler pain points and replace the feedback url.</p>
+          <code>https://YOUR_FEEDBACK_FORM_URL_HERE</code>
+        </article>
+      </div>
     </section>
 
     <div class="footer-note">
-      Early launch version: a concierge service powered by JetLag's method. This page is wired with clear placeholders for your payment, newsletter, and feedback URLs. Support email: <strong>lexihallxo@gmail.com</strong>.
+      this site is now the main website entry point for jetlag. it carries the concierge offer, the growth narrative, the newsletter engine, and the wire-up placeholders needed for launch. once your real links are inserted, this is ready to be your public front door.
     </div>
-  </main>
+
+    <div class="footer-note">
+      internal team dashboard:
+      <a href="./operations/founder-dashboard/index.html">open founder dashboard</a>
+    </div>
+  </div>
 </body>
 </html>

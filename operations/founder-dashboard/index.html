@@ -230,6 +230,26 @@
       border: 1px solid var(--line);
     }
 
+    .top-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .top-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
     a { color: var(--teal); }
 
     @media (max-width: 1040px) {
@@ -253,6 +273,12 @@
 </head>
 <body>
   <main class="page">
+    <div class="top-links">
+      <a href="../../index.html">open public website</a>
+      <a href="./dashboard-guide.md">open dashboard guide</a>
+      <a href="../../operations/launch-readiness.md">open launch readiness</a>
+    </div>
+
     <section class="hero">
       <div class="hero-grid">
         <div>
