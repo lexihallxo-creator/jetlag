@@ -264,6 +264,96 @@
       overflow: hidden;
     }
 
+    .globe-map,
+    .globe-route-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .globe-route-svg {
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .globe-map {
+      z-index: 2;
+    }
+
+    .globe-route {
+      fill: none;
+      stroke: rgba(110, 86, 57, 0.42);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 8 8;
+      filter: drop-shadow(0 3px 8px rgba(76, 56, 35, 0.18));
+    }
+
+    .globe-marker {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: none;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(74, 55, 34, 0.22);
+      box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.45);
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+      z-index: 3;
+    }
+
+    .globe-marker:hover,
+    .globe-marker:focus-visible {
+      transform: translate(-50%, -50%) scale(1.25);
+      background: rgba(114, 86, 52, 0.72);
+      box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.56);
+      outline: none;
+    }
+
+    .globe-marker.active {
+      background: rgba(114, 86, 52, 0.92);
+      box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.72), 0 0 0 14px rgba(214, 198, 184, 0.38);
+    }
+
+    .globe-marker.secondary {
+      background: rgba(158, 129, 98, 0.72);
+    }
+
+    .globe-legend,
+    .globe-focus,
+    .planner-note,
+    .status-note,
+    .directory-meta {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid rgba(26, 26, 26, 0.06);
+      box-shadow: var(--shadow-soft);
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .globe-legend strong,
+    .globe-focus strong,
+    .status-note strong,
+    .directory-meta strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+
+    .globe-legend span,
+    .globe-focus span,
+    .status-note span,
+    .directory-meta span {
+      display: block;
+      margin-top: 8px;
+    }
+
     .globe-shell::before,
     .globe-shell::after {
       content: "";
@@ -540,6 +630,10 @@
       grid-template-columns: repeat(3, 1fr);
     }
 
+    .planner-grid.lead-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     .hidden {
       display: none;
     }
@@ -577,6 +671,88 @@
       margin-bottom: 0;
     }
 
+    .protocol-sections {
+      margin-top: 12px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .protocol-section {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(26,26,26,0.06);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .protocol-section strong {
+      display: block;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .protocol-section p,
+    .protocol-section ul {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .protocol-section ul {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .field textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 14px;
+      resize: vertical;
+      border-radius: 16px;
+      border: 1px solid rgba(26, 26, 26, 0.08);
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--text);
+      font: inherit;
+      box-shadow: var(--shadow-soft);
+      text-transform: lowercase;
+    }
+
+    .mini-inline-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .mini-inline-stat {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(26, 26, 26, 0.06);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .mini-inline-stat strong {
+      display: block;
+      font-size: 1.05rem;
+      letter-spacing: -0.03em;
+    }
+
+    .mini-inline-stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+
     @keyframes drift {
       from {
         transform: translateX(0);
@@ -591,7 +767,8 @@
       .grid-4,
       .outcomes,
       .protocol-flow,
-      .planner {
+      .planner,
+      .mini-inline-stats {
         grid-template-columns: 1fr 1fr;
       }
 
@@ -615,7 +792,10 @@
       .protocol-flow,
       .mini-metrics,
       .planner,
-      .planner-grid {
+      .planner-grid,
+      .planner-grid.full,
+      .planner-grid.lead-grid,
+      .mini-inline-stats {
         grid-template-columns: 1fr;
       }
     }
@@ -689,7 +869,7 @@
         <div>
           <h2>preloaded worldwide airports + time zones</h2>
           <p>
-            use the route planner to preview how on arrival thinks about departure, arrival, and time drift. the directory below is preloaded with major airport hubs across the globe and mapped to their time zones.
+            use the route planner to preview how on arrival thinks about departure, arrival, and time drift. the directory below is preloaded with a broader worldwide airport directory, mapped to time zones, and tied to a visual globe so the route can be seen before it is acted on.
           </p>
         </div>
         <span class="micro-pill">airport intelligence preview</span>
@@ -699,8 +879,13 @@
         <article class="planner-card">
           <div class="eyebrow">route input</div>
           <p class="planner-copy">
-            start with departure and arrival airports. on arrival uses route, timezone shift, and your first important moment after landing to shape the arrival protocol™.
+            start with departure and arrival airports. on arrival uses route, timezone shift, trip shape, weather context, and your first important moment after landing to shape the arrival protocol.
           </p>
+
+          <div class="directory-meta">
+            <strong><span id="airport-count">0</span> airports currently loaded</strong>
+            <span>click a highlighted hub on the globe or search by city, airport, or code. the planner supports one-way, round-trip, and multi-city flows.</span>
+          </div>
 
           <div class="planner-grid">
             <label class="field">
@@ -772,9 +957,67 @@
             </label>
           </div>
 
+          <div class="mini-inline-stats">
+            <div class="mini-inline-stat">
+              <strong id="drift-hours">0 hours</strong>
+              <span>timezone shift</span>
+            </div>
+            <div class="mini-inline-stat">
+              <strong id="critical-window">arrival day</strong>
+              <span>first high-stakes window</span>
+            </div>
+            <div class="mini-inline-stat">
+              <strong id="route-intensity">light reset</strong>
+              <span>protocol intensity</span>
+            </div>
+          </div>
+
           <div class="planner-actions">
             <button class="button primary" id="preview-route" type="button">preview arrival protocol</button>
+            <button class="button secondary" id="generate-protocol" type="button">generate full protocol</button>
             <button class="button secondary" id="reset-route" type="button">reset route</button>
+          </div>
+
+          <div class="planner-note">
+            use the generator when you want the fuller pre-flight, in-flight, arrival, first-night, and next-day playbook. save lead is meant to preserve high-intent inquiries until a live form endpoint is wired in.
+          </div>
+
+          <div class="planner-grid lead-grid">
+            <label class="field">
+              <span>name</span>
+              <input id="lead-name" placeholder="who is traveling" />
+            </label>
+            <label class="field">
+              <span>email</span>
+              <input id="lead-email" type="email" placeholder="email for the full protocol" />
+            </label>
+            <label class="field">
+              <span>company or team</span>
+              <input id="lead-company" placeholder="company, family, or team name" />
+            </label>
+            <label class="field">
+              <span>travel cadence</span>
+              <select id="lead-frequency">
+                <option value="one trip coming up">one trip coming up</option>
+                <option value="monthly travel">monthly travel</option>
+                <option value="frequent global travel">frequent global travel</option>
+                <option value="exec or team travel">exec or team travel</option>
+              </select>
+            </label>
+            <label class="field" style="grid-column: 1 / -1;">
+              <span>notes for the protocol</span>
+              <textarea id="lead-notes" placeholder="important meetings, happy hours, investor dinners, family plans, or recovery constraints"></textarea>
+            </label>
+          </div>
+
+          <div class="planner-actions">
+            <button class="button primary" id="save-lead" type="button">save lead + protocol brief</button>
+            <button class="button secondary" id="download-brief" type="button">download protocol brief</button>
+          </div>
+
+          <div class="status-note" id="lead-status">
+            <strong>lead capture ready</strong>
+            <span>once a real form endpoint is connected, this panel can hand off directly to your crm. for now it stores inquiries in the browser and prepares a clean handoff brief.</span>
           </div>
 
           <datalist id="airport-options"></datalist>
@@ -782,6 +1025,18 @@
 
         <article class="planner-card">
           <div class="eyebrow">route preview</div>
+          <div class="globe-shell" id="planner-globe">
+            <svg class="globe-route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path id="globe-route-primary" class="globe-route"></path>
+              <path id="globe-route-secondary" class="globe-route"></path>
+            </svg>
+            <div class="globe-map" id="globe-map"></div>
+          </div>
+          <div class="shadow-disc"></div>
+          <div class="globe-focus" id="globe-focus">
+            <strong>globe interaction</strong>
+            <span>selected airports will light up here. click a marker to fill the current planner field.</span>
+          </div>
           <div class="route-result">
             <div class="result-box">
               <strong id="route-summary">choose a departure and arrival airport</strong>
@@ -798,6 +1053,18 @@
                 <li>the system will estimate your timezone drift</li>
                 <li>your selected travel goal will shape the guidance</li>
               </ul>
+            </div>
+            <div class="result-box">
+              <strong>full protocol output</strong>
+              <div class="protocol-sections" id="protocol-sections">
+                <div class="protocol-section">
+                  <strong>waiting for route details</strong>
+                  <p>generate the full protocol after choosing a route to see pre-flight, in-flight, arrival, first-night, next-day, and return guidance.</p>
+                </div>
+              </div>
+              <div class="result-actions">
+                <a class="button secondary" id="protocol-mailto" href="mailto:hello@onarrival.travel?subject=on%20arrival%20protocol%20request">email this brief</a>
+              </div>
             </div>
           </div>
         </article>
@@ -1307,5 +1574,6 @@
     travelMonthInput.addEventListener("change", renderPreview);
     planStyleInput.addEventListener("change", renderPreview);
   </script>
+  <script src="./site-enhancements.js"></script>
 </body>
 </html>
