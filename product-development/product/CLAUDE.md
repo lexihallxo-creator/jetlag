@@ -9,6 +9,7 @@ This directory contains JetLag's product-layer context: strategy, PRDs, customer
 | `strategy/` | Business context, users, roadmap, and long-term direction |
 | `product-context/` | High-level explanation of how the product works |
 | `PRDs/` | Product requirements for active initiatives |
+| `newsletters/` | Newsletter strategy, recurring formats, issue drafts, and publishing workflow |
 | `customers/` | Customer interviews, summaries, account context |
 | `meetings/` | Planning notes and recurring team summaries |
 | `processes/` | Repeatable product operating procedures |
