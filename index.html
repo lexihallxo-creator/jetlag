@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>jetlag</title>
+  <title>on arrival</title>
   <style>
     :root {
-      --bg: #efe5d7;
-      --bg-soft: #f7f1e7;
-      --panel: rgba(255, 251, 245, 0.94);
+      --bg: #f7f3ee;
+      --bg-deep: #efe5d7;
+      --panel: rgba(255, 252, 247, 0.9);
       --panel-strong: #fffdf9;
-      --ink: #2d261f;
-      --muted: #766a5c;
-      --accent: #8f6f4d;
-      --accent-soft: #dbc7af;
-      --line: rgba(78, 61, 42, 0.12);
-      --shadow-lg: 0 30px 80px rgba(83, 64, 41, 0.16);
-      --shadow-md: 0 20px 40px rgba(83, 64, 41, 0.12);
-      --shadow-sm: 0 10px 24px rgba(83, 64, 41, 0.1);
+      --text: #1a1a1a;
+      --muted: #6f6a64;
+      --sand: #d6c6b8;
+      --sand-deep: #bca892;
+      --line: rgba(26, 26, 26, 0.08);
+      --shadow-soft: 0 14px 32px rgba(41, 31, 21, 0.08);
+      --shadow-mid: 0 28px 60px rgba(41, 31, 21, 0.12);
+      --shadow-float: 0 36px 90px rgba(41, 31, 21, 0.14);
     }
 
     * {
@@ -30,57 +30,75 @@
 
     body {
       margin: 0;
-      font-family: "georgia", "times new roman", serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(219, 199, 175, 0.8), transparent 28%),
-        radial-gradient(circle at top right, rgba(255, 255, 255, 0.9), transparent 24%),
-        linear-gradient(180deg, #fbf7f1 0%, var(--bg) 100%);
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
       text-transform: lowercase;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(214, 198, 184, 0.55), transparent 24%),
+        radial-gradient(circle at 88% 10%, rgba(255, 255, 255, 0.95), transparent 24%),
+        linear-gradient(180deg, #fcfaf7 0%, var(--bg) 40%, var(--bg-deep) 100%);
     }
 
     a {
       color: inherit;
+      text-decoration: none;
     }
 
-    .shell {
-      width: min(1220px, calc(100% - 28px));
+    .page {
+      width: min(1240px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 24px 0 72px;
+      padding: 20px 0 72px;
     }
 
     .nav,
     .hero,
-    .panel,
-    .card,
-    .wire,
-    .quote,
-    .stack-card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow-md);
+    .section,
+    .metric-card,
+    .stack-card,
+    .protocol-card,
+    .signal-card {
       position: relative;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow-mid);
+    }
+
+    .nav,
+    .hero,
+    .section {
+      border-radius: 30px;
+    }
+
+    .metric-card,
+    .stack-card,
+    .protocol-card,
+    .signal-card {
+      border-radius: 24px;
+      transform: translateZ(0) perspective(1400px) rotateX(4deg);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .metric-card:hover,
+    .stack-card:hover,
+    .protocol-card:hover,
+    .signal-card:hover {
+      transform: translateY(-4px) perspective(1400px) rotateX(2deg) rotateY(-2deg);
+      box-shadow: var(--shadow-float);
     }
 
     .nav::before,
     .hero::before,
-    .panel::before,
-    .card::before,
-    .wire::before,
-    .quote::before,
-    .stack-card::before {
+    .section::before,
+    .metric-card::before,
+    .stack-card::before,
+    .protocol-card::before,
+    .signal-card::before {
       content: "";
       position: absolute;
       inset: 10px;
-      border: 1px solid rgba(143, 111, 77, 0.08);
+      border: 1px solid rgba(26, 26, 26, 0.05);
       border-radius: inherit;
       pointer-events: none;
-    }
-
-    .nav,
-    .hero,
-    .panel {
-      border-radius: 30px;
     }
 
     .nav {
@@ -88,9 +106,31 @@
       justify-content: space-between;
       align-items: center;
       gap: 14px;
-      padding: 16px 20px;
+      padding: 16px 18px;
       margin-bottom: 18px;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand,
+    .nav-links a,
+    .eyebrow,
+    .micro-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(26, 26, 26, 0.06);
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: var(--shadow-soft);
+      font-size: 0.86rem;
+      letter-spacing: 0.06em;
+    }
+
+    .brand {
+      font-weight: 700;
+      background: linear-gradient(180deg, #fffdf9 0%, #f1e6d9 100%);
     }
 
     .nav-links {
@@ -99,50 +139,19 @@
       gap: 10px;
     }
 
-    .nav-links a,
-    .nav-brand,
-    .chip {
-      text-decoration: none;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(78, 61, 42, 0.08);
-      box-shadow: var(--shadow-sm);
-      font-size: 0.9rem;
-      letter-spacing: 0.02em;
-    }
-
-    .nav-brand {
-      font-weight: 700;
-      background: linear-gradient(180deg, #fffdf9 0%, #f2e7d8 100%);
-    }
-
     .hero {
       overflow: hidden;
-      padding: 30px;
-      box-shadow: var(--shadow-lg);
+      padding: 28px;
       background:
-        linear-gradient(160deg, rgba(255, 252, 247, 0.98) 0%, rgba(245, 237, 225, 0.92) 100%);
+        radial-gradient(circle at 82% 18%, rgba(255,255,255,0.88), transparent 20%),
+        linear-gradient(160deg, rgba(255,253,249,0.96) 0%, rgba(244,236,225,0.9) 100%);
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: 22px;
       align-items: stretch;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(143, 111, 77, 0.1);
-      border: 1px solid rgba(143, 111, 77, 0.12);
-      box-shadow: var(--shadow-sm);
-      font-size: 0.82rem;
-      letter-spacing: 0.08em;
     }
 
     h1,
@@ -155,24 +164,25 @@
     h1 {
       margin-top: 18px;
       max-width: 10ch;
-      font-size: clamp(3rem, 7vw, 6.4rem);
-      line-height: 0.95;
-      letter-spacing: -0.06em;
+      font-size: clamp(3rem, 7vw, 6.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
     }
 
     h2 {
-      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      font-size: clamp(1.6rem, 3vw, 2.8rem);
       line-height: 1;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
     }
 
     h3 {
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       line-height: 1.15;
+      letter-spacing: -0.02em;
     }
 
     .lead {
-      max-width: 640px;
+      max-width: 620px;
       margin-top: 18px;
       color: var(--muted);
       line-height: 1.8;
@@ -180,7 +190,7 @@
     }
 
     .button-row,
-    .mini-row {
+    .micro-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
@@ -195,103 +205,141 @@
       padding: 0 18px;
       border-radius: 999px;
       border: 1px solid transparent;
-      text-decoration: none;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-soft);
       font-weight: 700;
+      letter-spacing: 0.02em;
     }
 
     .button.primary {
-      background: linear-gradient(180deg, #9a7752 0%, #866644 100%);
-      color: #fffaf4;
+      background: linear-gradient(180deg, #e3d3c1 0%, #ceb9a1 100%);
+      color: #1c1611;
     }
 
     .button.secondary {
-      background: rgba(255, 255, 255, 0.82);
-      border-color: rgba(78, 61, 42, 0.1);
+      background: rgba(255, 255, 255, 0.78);
+      border-color: rgba(26, 26, 26, 0.07);
     }
 
-    .mini-row {
+    .micro-row {
       gap: 10px;
     }
 
-    .chip {
-      font-size: 0.82rem;
-      color: var(--muted);
+    .globe-panel,
+    .hero-copy-panel {
+      position: relative;
+      min-height: 100%;
     }
 
-    .hero-side,
-    .quote,
-    .card,
-    .stack-card,
-    .wire {
-      border-radius: 26px;
+    .hero-copy-panel {
+      padding: 10px 6px 10px 4px;
     }
 
-    .hero-side {
+    .globe-panel {
       display: grid;
       gap: 16px;
+      align-content: start;
     }
 
-    .quote,
-    .card,
-    .stack-card,
-    .wire {
-      padding: 20px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 241, 232, 0.9) 100%);
+    .globe-card {
+      padding: 24px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(244,235,224,0.9) 100%);
+      border: 1px solid rgba(26, 26, 26, 0.06);
+      box-shadow: var(--shadow-float);
     }
 
-    .quote {
-      transform: perspective(1200px) rotateX(3deg) rotateY(-4deg);
-      box-shadow: var(--shadow-lg);
+    .globe-shell {
+      width: min(360px, 100%);
+      aspect-ratio: 1;
+      margin: 6px auto 0;
+      position: relative;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,0.95), rgba(214,198,184,0.55) 32%, rgba(188,168,146,0.3) 58%, rgba(214,198,184,0.15) 74%, transparent 76%),
+        linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(223,205,186,0.85) 100%);
+      box-shadow:
+        inset -24px -18px 50px rgba(112, 89, 60, 0.12),
+        inset 18px 18px 44px rgba(255,255,255,0.8),
+        0 26px 44px rgba(67, 51, 35, 0.14);
+      overflow: hidden;
     }
 
-    .quote p {
+    .globe-shell::before,
+    .globe-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+    }
+
+    .globe-shell::before {
+      background:
+        repeating-linear-gradient(90deg, transparent 0 22px, rgba(143,111,77,0.12) 22px 24px),
+        repeating-linear-gradient(180deg, transparent 0 32px, rgba(143,111,77,0.08) 32px 34px);
+      mix-blend-mode: multiply;
+      opacity: 0.6;
+      animation: drift 18s linear infinite;
+    }
+
+    .globe-shell::after {
+      width: 62%;
+      height: 62%;
+      top: 18%;
+      left: 18%;
+      background: radial-gradient(circle at 38% 34%, rgba(255,255,255,0.95), transparent 60%);
+      filter: blur(8px);
+      opacity: 0.65;
+    }
+
+    .shadow-disc {
+      width: 72%;
+      height: 28px;
+      margin: 12px auto 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(83,64,41,0.2) 0%, rgba(83,64,41,0.08) 44%, transparent 74%);
+      filter: blur(10px);
+    }
+
+    .globe-copy {
+      margin-top: 18px;
       color: var(--muted);
-      line-height: 1.8;
-      margin-top: 12px;
+      line-height: 1.75;
+      text-align: center;
     }
 
-    .quote strong {
-      display: block;
-      font-size: 2.4rem;
-      line-height: 1;
-      letter-spacing: -0.06em;
-    }
-
-    .stats {
+    .mini-metrics {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
 
-    .stat {
-      padding: 16px;
-      border-radius: 22px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(78, 61, 42, 0.08);
-      box-shadow: var(--shadow-sm);
-      transform: translateZ(0);
+    .metric-card,
+    .stack-card,
+    .protocol-card,
+    .signal-card {
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(247,241,232,0.88) 100%);
     }
 
-    .stat strong {
+    .metric-card strong,
+    .signal-card strong {
       display: block;
-      font-size: 1.6rem;
+      font-size: 1.45rem;
+      line-height: 1;
       letter-spacing: -0.04em;
     }
 
-    .stat span {
+    .metric-card span,
+    .signal-card span {
       display: block;
-      margin-top: 8px;
+      margin-top: 10px;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.6;
       font-size: 0.92rem;
     }
 
     .section {
-      margin-top: 20px;
-    }
-
-    .panel {
+      margin-top: 18px;
       padding: 24px;
     }
 
@@ -299,355 +347,469 @@
       display: flex;
       justify-content: space-between;
       gap: 14px;
-      align-items: flex-end;
+      align-items: end;
     }
 
     .section-head p {
-      max-width: 620px;
+      max-width: 680px;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.75;
+      margin-top: 10px;
     }
 
     .grid-3,
     .grid-4,
-    .wire-grid {
+    .grid-2 {
       display: grid;
       gap: 16px;
       margin-top: 20px;
-    }
-
-    .grid-3 {
-      grid-template-columns: repeat(3, 1fr);
     }
 
     .grid-4 {
       grid-template-columns: repeat(4, 1fr);
     }
 
-    .wire-grid {
+    .grid-3 {
       grid-template-columns: repeat(3, 1fr);
     }
 
-    .card,
-    .stack-card,
-    .wire {
-      transform: perspective(1200px) rotateX(3deg);
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    .card p,
     .stack-card p,
-    .wire p {
+    .protocol-card p,
+    .signal-card p {
       margin-top: 12px;
       color: var(--muted);
       line-height: 1.7;
     }
 
-    .card ul,
-    .stack-card ul {
+    .stack-card ul,
+    .protocol-card ul {
       margin: 12px 0 0;
       padding-left: 18px;
       color: var(--muted);
       line-height: 1.7;
     }
 
-    .price-tag {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 92px;
-      padding: 10px 14px;
-      margin-top: 14px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #fff7ee 0%, #ead7c0 100%);
-      border: 1px solid rgba(143, 111, 77, 0.12);
-      box-shadow: var(--shadow-sm);
-      font-weight: 700;
-    }
-
-    .journey {
+    .protocol-flow {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
       margin-top: 20px;
     }
 
-    .journey .card {
-      min-height: 220px;
+    .protocol-card {
+      min-height: 240px;
     }
 
-    .wire code {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 8px 10px;
-      border-radius: 12px;
-      background: rgba(78, 61, 42, 0.06);
-      color: var(--accent);
-      font-size: 0.82rem;
-      word-break: break-all;
+    .outcomes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .outcome {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(26,26,26,0.06);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .outcome strong {
+      display: block;
+      font-size: 1.2rem;
+      letter-spacing: -0.03em;
+    }
+
+    .outcome span {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .split-cta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .final-cta {
+      text-align: center;
+      padding: 34px 24px;
+    }
+
+    .final-cta h2 {
+      font-size: clamp(2rem, 4vw, 4rem);
+    }
+
+    .final-cta p {
+      max-width: 640px;
+      margin: 16px auto 0;
+      color: var(--muted);
+      line-height: 1.8;
     }
 
     .footer-note {
-      margin-top: 20px;
+      margin-top: 18px;
       padding: 18px 20px;
       border-radius: 22px;
-      background: rgba(255, 248, 238, 0.8);
       border: 1px solid var(--line);
+      background: rgba(255, 250, 244, 0.8);
+      box-shadow: var(--shadow-soft);
       color: var(--muted);
-      line-height: 1.7;
-      box-shadow: var(--shadow-sm);
+      line-height: 1.75;
     }
 
-    @media (max-width: 1050px) {
+    @keyframes drift {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(24px);
+      }
+    }
+
+    @media (max-width: 1080px) {
       .hero-grid,
       .grid-4,
-      .journey,
-      .wire-grid {
+      .outcomes,
+      .protocol-flow {
         grid-template-columns: 1fr 1fr;
       }
 
-      .grid-3 {
+      .grid-3,
+      .grid-2,
+      .split-cta {
         grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 760px) {
-      .hero-grid,
-      .grid-4,
-      .journey,
-      .wire-grid,
-      .stats,
-      .stack {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head,
-      .nav {
+      .nav,
+      .section-head {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .hero-grid,
+      .grid-4,
+      .outcomes,
+      .protocol-flow,
+      .mini-metrics {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
+  <div class="page">
     <nav class="nav">
-      <div class="nav-brand">jetlag</div>
+      <div class="brand">on arrival™</div>
       <div class="nav-links">
-        <a href="#offer">offer</a>
-        <a href="#plans">plans</a>
-        <a href="#newsletter">newsletter</a>
-        <a href="#wire-up">wire up</a>
+        <a href="#problem">problem</a>
+        <a href="#system">system</a>
+        <a href="#outcomes">outcomes</a>
+        <a href="#teams">for teams</a>
         <a href="./operations/founder-dashboard/index.html">internal dashboard</a>
       </div>
     </nav>
 
-    <section class="hero" id="offer">
+    <section class="hero">
       <div class="hero-grid">
-        <div>
-          <div class="eyebrow">travel recovery, rebuilt</div>
-          <h1>the jetlag website is here.</h1>
+        <div class="hero-copy-panel">
+          <div class="eyebrow">on arrival™ · immune to jet lag™</div>
+          <h1>arrive capable.</h1>
           <p class="lead">
-            jetlag is a beige-and-white launch site for a travel recovery company built to help people land functional, clear, and useful after crossing time zones. right now the front door sells a concierge plan, grows the newsletter, collects feedback, and carries the product story forward.
+            jet lag is not a sleep problem. it is a timing problem. on arrival is a travel performance system that helps people recover faster by aligning timing, physiology, and behavior from the moment they land.
           </p>
           <div class="button-row">
-            <a class="button primary" href="https://YOUR_PAYMENT_LINK_HERE">book jetlag express</a>
-            <a class="button secondary" href="https://YOUR_NEWSLETTER_SIGNUP_URL_HERE">join the newsletter</a>
-            <a class="button secondary" href="https://YOUR_FEEDBACK_FORM_URL_HERE">send feedback</a>
+            <a class="button primary" href="https://YOUR_PAYMENT_LINK_HERE">get my arrival plan</a>
+            <a class="button secondary" href="#teams">for teams & enterprises</a>
           </div>
-          <div class="mini-row">
-            <span class="chip">all visible copy is lowercase</span>
-            <span class="chip">beige + white 3d visual system</span>
-            <span class="chip">built for revenue + audience + feedback</span>
+          <div class="micro-row">
+            <span class="micro-pill">recovery begins on arrival</span>
+            <span class="micro-pill">premium, calm, performance-first</span>
+            <span class="micro-pill">digital system, not a supplement brand</span>
           </div>
         </div>
 
-        <div class="hero-side">
-          <article class="quote">
-            <strong>land functional.</strong>
-            <p>
-              not wrecked. not foggy. not improvising your first 48 hours after landing. jetlag turns itinerary details into a more useful recovery system before the full app even ships.
+        <div class="globe-panel">
+          <article class="globe-card">
+            <div class="globe-shell"></div>
+            <div class="shadow-disc"></div>
+            <p class="globe-copy">
+              a soft, global control surface for timing, digestion, and the nervous system. the site is designed to feel like calm control, not biohacking noise.
             </p>
           </article>
 
-          <div class="stats">
-            <div class="stat">
-              <strong>$29</strong>
-              <span>starter concierge offer for a personalized trip plan</span>
-            </div>
-            <div class="stat">
-              <strong>$500m</strong>
-              <span>estimated market opportunity inside the business plan</span>
-            </div>
-            <div class="stat">
-              <strong>2x weekly</strong>
-              <span>newsletter rhythm with tactical issues and signal drops</span>
-            </div>
-            <div class="stat">
-              <strong>8:00 am</strong>
-              <span>daily scan already runs to surface growth and revenue opportunities</span>
-            </div>
+          <div class="mini-metrics">
+            <article class="metric-card">
+              <strong>$25k-$250k</strong>
+              <span>corporate travel performance program range</span>
+            </article>
+            <article class="metric-card">
+              <strong>$5k-$25k</strong>
+              <span>executive concierge annual range</span>
+            </article>
+            <article class="metric-card">
+              <strong>first 48 hours</strong>
+              <span>the highest-value recovery window to own</span>
+            </article>
+            <article class="metric-card">
+              <strong>3 layers</strong>
+              <span>arrival protocol™, arrival ritual™, arrival intelligence™</span>
+            </article>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section panel" id="plans">
+    <section class="section" id="problem">
       <div class="section-head">
         <div>
-          <h2>the core plans, all in one place</h2>
-          <p>the website now reflects the actual launch model: revenue first, newsletter-driven trust, structured feedback, and a longer-term product ladder.</p>
+          <h2>you do not lose days to travel. you lose alignment.</h2>
+          <p>
+            most travelers accept fatigue as part of the journey. on arrival reframes the problem: when light, food, sleep, digestion, and the nervous system fall out of sync, recovery slows down and the first meaningful moments after landing get lost.
+          </p>
         </div>
-        <span class="chip">solo founder, ai-first team</span>
-      </div>
-
-      <div class="grid-4">
-        <article class="card">
-          <h3>revenue plan</h3>
-          <p>sell jetlag express now as a manual concierge plan for people flying within the next 7 days.</p>
-          <div class="price-tag">$29 launch offer</div>
-          <ul>
-            <li>personalized sleep, light, and caffeine timing</li>
-            <li>fast turnaround</li>
-            <li>same-day sales workflow</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>newsletter plan</h3>
-          <p>grow a memorable audience asset with tactical travel recovery writing instead of generic wellness content.</p>
-          <ul>
-            <li>arrival autopsies</li>
-            <li>time-zone playbooks</li>
-            <li>contrarian myth-breakers</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>feedback plan</h3>
-          <p>collect pain points, objections, and request patterns directly from travelers so product and messaging get sharper each week.</p>
-          <ul>
-            <li>tally form for structured responses</li>
-            <li>csv tracker for themes</li>
-            <li>quote capture for future proof</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>product plan</h3>
-          <p>start with concierge outcomes, then grow into the free, core, and premium product ladder already mapped in the repo.</p>
-          <ul>
-            <li>free for top-of-funnel</li>
-            <li>core at $29.99/year</li>
-            <li>premium at $79.99/year</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section panel">
-      <div class="section-head">
-        <div>
-          <h2>how the launch stack works</h2>
-          <p>this website is designed to do more than look good. it is built to move someone from curiosity into payment, newsletter signup, or direct product feedback.</p>
-        </div>
-        <span class="chip">lowercase across the site</span>
-      </div>
-
-      <div class="journey">
-        <article class="card">
-          <h3>01. attract</h3>
-          <p>bring people in through newsletter issues, daily scan insights, direct outreach, and social replies.</p>
-        </article>
-        <article class="card">
-          <h3>02. convert</h3>
-          <p>offer jetlag express as the immediate outcome for travelers with real upcoming trips.</p>
-        </article>
-        <article class="card">
-          <h3>03. learn</h3>
-          <p>route readers and buyers into feedback collection so the product and copy get smarter every cycle.</p>
-        </article>
-        <article class="card">
-          <h3>04. expand</h3>
-          <p>turn trust into newsletter growth, testimonials, referrals, and the longer-term product subscription path.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section panel" id="newsletter">
-      <div class="section-head">
-        <div>
-          <h2>newsletter + growth engine</h2>
-          <p>the newsletter is positioned as a field guide for people who need to function across time zones. it is meant to feel unusually useful, save-worthy, and forwardable.</p>
-        </div>
-        <span class="chip">designed to create trust</span>
+        <span class="micro-pill">timing problem, not a sleep problem</span>
       </div>
 
       <div class="grid-3">
         <article class="stack-card">
-          <h3>issue themes</h3>
-          <ul>
-            <li>why travelers lose the first 48 hours after landing</li>
-            <li>the new york to paris monday meeting playbook</li>
-            <li>the biggest lie in jet lag advice</li>
-            <li>the founder travel system</li>
-          </ul>
+          <h3>misalignment</h3>
+          <p>your body is operating in the wrong time zone even if your calendar is already demanding performance.</p>
         </article>
-
         <article class="stack-card">
-          <h3>why it feels unique</h3>
-          <ul>
-            <li>travel performance instead of lifestyle fluff</li>
-            <li>named frameworks and playbooks</li>
-            <li>real scenarios, not abstract tips</li>
-            <li>direct bridge into concierge revenue</li>
-          </ul>
+          <h3>hidden cost</h3>
+          <p>the real damage is not the flight itself. it is the lost meeting, cloudy decision-making, unstable energy, and poor first night after arrival.</p>
         </article>
-
         <article class="stack-card">
-          <h3>main calls to action</h3>
-          <ul>
-            <li>join the newsletter</li>
-            <li>reply with your route</li>
-            <li>book jetlag express</li>
-            <li>forward this to someone flying soon</li>
-          </ul>
+          <h3>new frame</h3>
+          <p>on arrival focuses on the first 24 to 48 hours, where recovery is won or lost and where travel performance actually matters.</p>
         </article>
       </div>
     </section>
 
-    <section class="section panel" id="wire-up">
+    <section class="section" id="system">
       <div class="section-head">
         <div>
-          <h2>wire this up and publish</h2>
-          <p>the final live system still needs real links from your external tools. those placeholders are already embedded here so replacing them will take seconds once the accounts are ready.</p>
+          <h2>most solutions treat symptoms. we align systems.</h2>
+          <p>
+            existing tools tend to focus on sleep timing alone or product bundles alone. on arrival is built as a performance intelligence layer that combines timing, physiology, and arrival behavior into one structured system.
+          </p>
         </div>
-        <span class="chip">ready for github pages</span>
+        <span class="micro-pill">performance intelligence layer</span>
       </div>
 
-      <div class="wire-grid">
-        <article class="wire">
-          <h3>payment link</h3>
-          <p>create a stripe or gumroad link for jetlag express and replace the booking url.</p>
-          <code>https://YOUR_PAYMENT_LINK_HERE</code>
+      <div class="grid-3">
+        <article class="stack-card">
+          <h3>arrival protocol™</h3>
+          <p>the method layer that maps what to do before travel, during travel, and in the first recovery window after landing.</p>
+          <ul>
+            <li>route-specific timing</li>
+            <li>arrival-first planning</li>
+            <li>clear action sequence</li>
+          </ul>
         </article>
 
-        <article class="wire">
-          <h3>newsletter link</h3>
-          <p>create a beehiiv, substack, or convertkit signup form and replace the newsletter url.</p>
-          <code>https://YOUR_NEWSLETTER_SIGNUP_URL_HERE</code>
+        <article class="stack-card">
+          <h3>arrival ritual™</h3>
+          <p>the behavior layer for the first 6 to 24 hours so travelers do not guess through the most important recovery phase.</p>
+          <ul>
+            <li>light timing</li>
+            <li>meal and digestion timing</li>
+            <li>nervous system and rest cues</li>
+          </ul>
         </article>
 
-        <article class="wire">
-          <h3>feedback link</h3>
-          <p>create a tally form for traveler pain points and replace the feedback url.</p>
-          <code>https://YOUR_FEEDBACK_FORM_URL_HERE</code>
+        <article class="stack-card">
+          <h3>arrival intelligence™</h3>
+          <p>the adaptive layer that will evolve into JetLag’s timing engine, enterprise reporting layer, and protocol personalization system.</p>
+          <ul>
+            <li>trip inputs</li>
+            <li>adaptive adjustments</li>
+            <li>future enterprise insight</li>
+          </ul>
         </article>
       </div>
     </section>
 
-    <div class="footer-note">
-      this site is now the main website entry point for jetlag. it carries the concierge offer, the growth narrative, the newsletter engine, and the wire-up placeholders needed for launch. once your real links are inserted, this is ready to be your public front door.
-    </div>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>how it works</h2>
+          <p>
+            the system should feel calm, simple, and decisive. no overload. no protocol chaos. just a structured path from travel input to predictable recovery.
+          </p>
+        </div>
+        <span class="micro-pill">clear > clinical</span>
+      </div>
+
+      <div class="protocol-flow">
+        <article class="protocol-card">
+          <h3>1. input your trip</h3>
+          <p>flight, time zones, schedule, and the first important thing you need to be capable for after landing.</p>
+          <ul>
+            <li>departure and arrival timing</li>
+            <li>trip purpose</li>
+            <li>sleep and energy preferences</li>
+          </ul>
+        </article>
+
+        <article class="protocol-card">
+          <h3>2. get your arrival protocol™</h3>
+          <p>a guided plan covering pre-flight, in-flight, on arrival, first night, and next-day stabilization.</p>
+          <ul>
+            <li>timed actions</li>
+            <li>arrival-first logic</li>
+            <li>practical recovery steps</li>
+          </ul>
+        </article>
+
+        <article class="protocol-card">
+          <h3>3. execute your arrival ritual™</h3>
+          <p>follow simple timed behaviors so recovery becomes more predictable and less improvisational.</p>
+          <ul>
+            <li>light</li>
+            <li>food</li>
+            <li>movement</li>
+            <li>sleep anchor</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="outcomes">
+      <div class="section-head">
+        <div>
+          <h2>what changes when you arrive aligned</h2>
+          <p>
+            this is not about vague wellness language. it is about protecting the first work block, the first meeting, the first night of real sleep, and the first day of clear decisions.
+          </p>
+        </div>
+        <span class="micro-pill">performance outcomes</span>
+      </div>
+
+      <div class="outcomes">
+        <div class="outcome">
+          <strong>clear thinking</strong>
+          <span>within the first 24 to 36 hours instead of waiting days to recover.</span>
+        </div>
+        <div class="outcome">
+          <strong>stable energy</strong>
+          <span>across the day instead of spikes, crashes, and panic-caffeine cycles.</span>
+        </div>
+        <div class="outcome">
+          <strong>aligned sleep</strong>
+          <span>from night one instead of compounding a second bad night.</span>
+        </div>
+        <div class="outcome">
+          <strong>better arrival decisions</strong>
+          <span>because the first important moment after landing is protected, not wasted.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="teams">
+      <div class="section-head">
+        <div>
+          <h2>built for individuals now, designed for enterprises next</h2>
+          <p>
+            this is not only a consumer-facing experience. it is also the front door for a higher-value enterprise pipeline around leadership travel performance, executive readiness, and team travel productivity.
+          </p>
+        </div>
+        <span class="micro-pill">individual + enterprise split</span>
+      </div>
+
+      <div class="grid-4">
+        <article class="signal-card">
+          <strong>executives</strong>
+          <span>back-to-back meetings, limited downtime, high cost of poor arrival performance.</span>
+        </article>
+        <article class="signal-card">
+          <strong>consultants</strong>
+          <span>weekly travel, repeated time-zone shifts, and visible productivity loss.</span>
+        </article>
+        <article class="signal-card">
+          <strong>global teams</strong>
+          <span>cross-time-zone collaboration that breaks when travel erodes clarity and energy.</span>
+        </article>
+        <article class="signal-card">
+          <strong>founders</strong>
+          <span>decision-heavy schedules where the first 48 hours after landing matter most.</span>
+        </article>
+      </div>
+
+      <div class="split-cta">
+        <article class="stack-card">
+          <h3>for individuals</h3>
+          <p>start with a personalized arrival plan and use the consumer layer as the first step into the system.</p>
+          <div class="button-row">
+            <a class="button primary" href="https://YOUR_PAYMENT_LINK_HERE">get my arrival plan</a>
+            <a class="button secondary" href="https://YOUR_NEWSLETTER_SIGNUP_URL_HERE">join the newsletter</a>
+          </div>
+        </article>
+
+        <article class="stack-card">
+          <h3>for teams & enterprises</h3>
+          <p>use immune to jet lag™ as the entry point into leadership travel programs, executive readiness protocols, and team-level travel performance support.</p>
+          <div class="button-row">
+            <a class="button primary" href="https://YOUR_FEEDBACK_FORM_URL_HERE">book a strategy conversation</a>
+            <a class="button secondary" href="./operations/founder-dashboard/index.html">open internal dashboard</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>built on biology, not hacks</h2>
+          <p>
+            the credibility layer should keep getting stronger, but the direction is already clear: circadian timing, digestion, nervous system regulation, and travel behavior are treated as one system instead of separate hacks.
+          </p>
+        </div>
+        <span class="micro-pill">premium, not noisy</span>
+      </div>
+
+      <div class="grid-2">
+        <article class="stack-card">
+          <h3>what this brand is</h3>
+          <ul>
+            <li>an operating system for human performance in motion</li>
+            <li>a travel performance system</li>
+            <li>a calm premium intelligence layer</li>
+          </ul>
+        </article>
+        <article class="stack-card">
+          <h3>what this brand is not</h3>
+          <ul>
+            <li>not a supplement company</li>
+            <li>not a generic wellness app</li>
+            <li>not just a sleep-timing calculator</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section final-cta">
+      <div class="eyebrow">final call</div>
+      <h2>travel does not have to cost you days.</h2>
+      <p>
+        on arrival™ is being built as a real conversion engine and enterprise pipeline, not just a pretty page. start with the arrival plan, join the intelligence layer, or use the internal dashboard to shape the next move.
+      </p>
+      <div class="button-row" style="justify-content:center;">
+        <a class="button primary" href="https://YOUR_PAYMENT_LINK_HERE">get my arrival plan</a>
+        <a class="button secondary" href="https://YOUR_NEWSLETTER_SIGNUP_URL_HERE">join the newsletter</a>
+      </div>
+    </section>
 
     <div class="footer-note">
       internal team dashboard:
