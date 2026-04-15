@@ -536,6 +536,14 @@
       margin-top: 18px;
     }
 
+    .planner-grid.full {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .hidden {
+      display: none;
+    }
+
     .route-result {
       margin-top: 18px;
       display: grid;
@@ -696,6 +704,14 @@
 
           <div class="planner-grid">
             <label class="field">
+              <span>trip shape</span>
+              <select id="trip-shape">
+                <option value="one-way">one-way</option>
+                <option value="round-trip">round-trip</option>
+                <option value="multi-city">multi-city</option>
+              </select>
+            </label>
+            <label class="field">
               <span>departure airport</span>
               <input id="departure-airport" list="airport-options" placeholder="search city, airport, or code" />
             </label>
@@ -703,6 +719,13 @@
               <span>arrival airport</span>
               <input id="arrival-airport" list="airport-options" placeholder="search city, airport, or code" />
             </label>
+            <label class="field hidden" id="return-airport-wrap">
+              <span>return or next-leg airport</span>
+              <input id="return-airport" list="airport-options" placeholder="search city, airport, or code" />
+            </label>
+          </div>
+
+          <div class="planner-grid full">
             <label class="field">
               <span>first important moment</span>
               <select id="arrival-goal">
@@ -710,6 +733,33 @@
                 <option value="work">focused work block</option>
                 <option value="vacation">vacation day and energy</option>
                 <option value="founder">founder or executive travel</option>
+                <option value="happy-hour">happy hour or social evening</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>when is that moment</span>
+              <select id="event-window">
+                <option value="same-day">same day after landing</option>
+                <option value="next-morning">next morning</option>
+                <option value="next-afternoon">next afternoon</option>
+                <option value="next-evening">next evening</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>travel month</span>
+              <select id="travel-month">
+                <option value="0">january</option>
+                <option value="1">february</option>
+                <option value="2">march</option>
+                <option value="3">april</option>
+                <option value="4">may</option>
+                <option value="5">june</option>
+                <option value="6">july</option>
+                <option value="7">august</option>
+                <option value="8">september</option>
+                <option value="9">october</option>
+                <option value="10">november</option>
+                <option value="11">december</option>
               </select>
             </label>
             <label class="field">
@@ -738,7 +788,11 @@
               <span id="route-timezones">the preview will show route, time zones, and arrival drift here.</span>
             </div>
             <div class="result-box">
-              <strong>arrival protocol preview</strong>
+              <strong id="route-weather-title">seasonal arrival weather</strong>
+              <span id="route-weather">choose a route and travel month to see a rough seasonal weather expectation.</span>
+            </div>
+            <div class="result-box">
+              <strong>end-to-end arrival protocol preview</strong>
               <ul id="protocol-preview">
                 <li>pick a route to see the first protocol moves</li>
                 <li>the system will estimate your timezone drift</li>
@@ -1088,12 +1142,19 @@
 
     const departureInput = document.getElementById("departure-airport");
     const arrivalInput = document.getElementById("arrival-airport");
+    const returnInput = document.getElementById("return-airport");
+    const returnWrap = document.getElementById("return-airport-wrap");
+    const tripShapeInput = document.getElementById("trip-shape");
     const goalInput = document.getElementById("arrival-goal");
+    const eventWindowInput = document.getElementById("event-window");
+    const travelMonthInput = document.getElementById("travel-month");
     const planStyleInput = document.getElementById("plan-style");
     const previewButton = document.getElementById("preview-route");
     const resetButton = document.getElementById("reset-route");
     const routeSummary = document.getElementById("route-summary");
     const routeTimezones = document.getElementById("route-timezones");
+    const routeWeatherTitle = document.getElementById("route-weather-title");
+    const routeWeather = document.getElementById("route-weather");
     const protocolPreview = document.getElementById("protocol-preview");
 
     const findAirport = (value) => airports.find((airport) => airportLabel(airport) === value.trim());
@@ -1105,35 +1166,91 @@
       return `${absolute} hour${absolute === 1 ? "" : "s"} ${direction}`;
     };
 
-    const buildProtocol = (shift, goal, style) => {
+    const monthNames = [
+      "january","february","march","april","may","june",
+      "july","august","september","october","november","december"
+    ];
+
+    const seasonalProfile = (airport, monthIndex) => {
+      const month = Number(monthIndex);
+      const summerNorth = [5, 6, 7];
+      const shoulderNorth = [3, 4, 8, 9];
+      const southernCodes = ["syd", "mel", "bne", "per", "akl", "gru", "eze", "scl", "jnb", "cpt"];
+      const tropicalCodes = ["sin", "kul", "cgk", "mnl", "hkg", "bkk", "dxb", "auh", "doh", "nbo", "los"];
+
+      if (tropicalCodes.includes(airport.code)) {
+        return "typically warm or hot with humidity likely; hydration and lighter meals usually matter more than temperature swings.";
+      }
+
+      const isSouthern = southernCodes.includes(airport.code);
+      const summer = isSouthern ? [11, 0, 1] : summerNorth;
+      const shoulder = isSouthern ? [2, 3, 8, 9] : shoulderNorth;
+
+      if (summer.includes(month)) {
+        return "typically warmer with longer light windows; expect stronger evening alertness if you arrive late.";
+      }
+
+      if (shoulder.includes(month)) {
+        return "typically mild to variable; light timing can still be useful because daylight shifts quickly across the day.";
+      }
+
+      return "typically cooler or darker in this season; morning light becomes more valuable and evening wind-down matters more.";
+    };
+
+    const buildProtocol = (shift, goal, style, eventWindow, tripShape) => {
       const longHaul = Math.abs(shift) >= 5;
       const goalMap = {
         meeting: "protect the first meeting and keep your first night from collapsing",
         work: "anchor the first focused work block after arrival",
         vacation: "keep energy usable for the first full day on the ground",
-        founder: "protect decision quality during the first 48 hours"
+        founder: "protect decision quality during the first 48 hours",
+        "happy-hour": "stay socially sharp and avoid fading before the evening event"
       };
       const styleMap = {
         balanced: "balanced and realistic",
         easy: "lightweight and easiest to follow",
         aggressive: "more aggressive timing shift"
       };
+      const windowMap = {
+        "same-day": "because the critical moment happens the same day you land",
+        "next-morning": "because the first important moment is the next morning",
+        "next-afternoon": "because you need stable afternoon energy after one night on the ground",
+        "next-evening": "because evening energy and social sharpness need protecting"
+      };
 
-      return [
-        `use a ${styleMap[style]} protocol built to ${goalMap[goal]}`,
+      const steps = [
+        `use a ${styleMap[style]} protocol built to ${goalMap[goal]} ${windowMap[eventWindow]}`,
         longHaul ? "start shifting light and meal timing before departure if possible" : "keep the plan simple and focus on arrival-day timing anchors",
         shift > 0 ? "treat destination bedtime as the main target and avoid late naps" : shift < 0 ? "delay extra sleep pressure until the new local evening" : "keep light, meals, and sleep stable so you do not create unnecessary drift",
         "on arrival, use light, food timing, and movement as the first control levers"
       ];
+
+      if (tripShape === "round-trip") {
+        steps.push("hold a lighter return strategy in reserve so the trip home does not undo the first-leg gains.");
+      }
+
+      if (tripShape === "multi-city") {
+        steps.push("anchor the first arrival strongly, then simplify the second leg so you do not keep re-optimizing from scratch.");
+      }
+
+      return steps;
+    };
+
+    const syncTripShape = () => {
+      const needsThirdStop = tripShapeInput.value !== "one-way";
+      returnWrap.classList.toggle("hidden", !needsThirdStop);
     };
 
     const renderPreview = () => {
       const departure = findAirport(departureInput.value);
       const arrival = findAirport(arrivalInput.value);
+      const returnAirport = findAirport(returnInput.value);
 
       if (!departure || !arrival) {
         routeSummary.textContent = "choose matching airports from the worldwide directory";
         routeTimezones.textContent = "pick both airports from the search list to preview the timezone shift.";
+        routeWeatherTitle.textContent = "seasonal arrival weather";
+        routeWeather.textContent = "choose a route and travel month to see a rough seasonal weather expectation.";
         protocolPreview.innerHTML = `
           <li>choose a valid departure airport</li>
           <li>choose a valid arrival airport</li>
@@ -1143,25 +1260,51 @@
       }
 
       const shift = arrival.offset - departure.offset;
-      routeSummary.textContent = `${departure.city} to ${arrival.city} - ${describeShift(shift)}`;
+      const tripShape = tripShapeInput.value;
+      let routeText = `${departure.city} to ${arrival.city}`;
+
+      if (tripShape === "round-trip" && returnAirport) {
+        routeText = `${departure.city} to ${arrival.city} and back to ${returnAirport.city}`;
+      }
+
+      if (tripShape === "multi-city" && returnAirport) {
+        routeText = `${departure.city} to ${arrival.city} to ${returnAirport.city}`;
+      }
+
+      routeSummary.textContent = `${routeText} - ${describeShift(shift)}`;
       routeTimezones.textContent = `${departure.code} (${departure.timezone}) to ${arrival.code} (${arrival.timezone}) - route built for ${goalInput.value} travel`;
-      protocolPreview.innerHTML = buildProtocol(shift, goalInput.value, planStyleInput.value)
+      routeWeatherTitle.textContent = `${arrival.city} in ${monthNames[Number(travelMonthInput.value)]}`;
+      routeWeather.textContent = seasonalProfile(arrival, travelMonthInput.value);
+      protocolPreview.innerHTML = buildProtocol(shift, goalInput.value, planStyleInput.value, eventWindowInput.value, tripShape)
         .map((item) => `<li>${item}</li>`)
         .join("");
     };
 
+    syncTripShape();
     previewButton.addEventListener("click", renderPreview);
     resetButton.addEventListener("click", () => {
+      tripShapeInput.value = "one-way";
       departureInput.value = "";
       arrivalInput.value = "";
+      returnInput.value = "";
       goalInput.value = "meeting";
+      eventWindowInput.value = "same-day";
+      travelMonthInput.value = "0";
       planStyleInput.value = "balanced";
+      syncTripShape();
       renderPreview();
     });
 
+    tripShapeInput.addEventListener("change", () => {
+      syncTripShape();
+      renderPreview();
+    });
     departureInput.addEventListener("change", renderPreview);
     arrivalInput.addEventListener("change", renderPreview);
+    returnInput.addEventListener("change", renderPreview);
     goalInput.addEventListener("change", renderPreview);
+    eventWindowInput.addEventListener("change", renderPreview);
+    travelMonthInput.addEventListener("change", renderPreview);
     planStyleInput.addEventListener("change", renderPreview);
   </script>
 </body>
