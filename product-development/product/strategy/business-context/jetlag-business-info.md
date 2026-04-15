@@ -2,56 +2,161 @@
 
 ## Executive Summary
 
-JetLag is a travel-focused digital product built to help users reduce jet lag through personalized plans, reminders, and travel-aware recovery guidance. The business is designed to launch lean, using AI to handle more than 80% of recurring work across product, growth, customer support, and operations.
+JetLag should be built and positioned as a travel performance system, not just a jet lag app. The strongest long-term business is not low-ARPU consumer subscriptions alone. It is a layered model that starts with concierge and consumer utility, then expands into enterprise programs, executive services, licensing, and data-driven insight products.
 
-## Market Opportunity
+## Core Position
+
+JetLag sells control over time, energy, and arrival.
+
+That makes it more valuable than a generic jet lag app because it can sit at the intersection of:
+
+- timing
+- digestion
+- nervous system regulation
+- first-48-hours performance
+- premium travel readiness
+
+## Market Frame
 
 - Estimated market opportunity: `$500M`
-- Category wedge: jet lag recovery and travel performance
-- Core demand driver: long-haul travelers want personalized guidance that is easier to follow than generic sleep advice
+- Category wedge: travel performance and time-zone recovery
+- Core demand driver: high-value travelers lose real energy, clarity, and productivity after long-haul travel
 
-## Problem
+## Competitive Insight
 
-Travelers crossing time zones often arrive tired, underperform, and unsure which sleep, light, caffeine, or schedule adjustments will actually help. Existing advice is fragmented, generic, or difficult to apply in real travel conditions.
+### What competitors do well
 
-## Solution
+- Timeshifter wins on scientific credibility, timing precision, and simple jet lag reduction
+- Flykitt wins on productized bundling and higher average order value through kits
+- Wearables own biometrics but not travel-specific action
+- Wellness brands are fragmented and rarely structured enough for serious travelers or enterprise buyers
 
-JetLag turns trip details into a practical adjustment plan with a simple product ladder:
+### What they miss
 
-- `Free`: lightweight trip setup and introductory recommendations
-- `Core`: annual subscription at `$29.99/year` for full recovery plans and reminders
-- `Premium`: annual subscription at `$79.99/year` for deeper personalization and higher-touch support features
+- digestion timing
+- nervous system framing
+- premium identity
+- enterprise-grade positioning
+- structured arrival-performance systems
+- strong ecosystem and authority layers
 
-## Business Model
+## Business Model Direction
 
-### Pricing
+Ecommerce or physical kits can be a useful entry point, but the best business is built around systems, access, authority, and licensing.
 
-| Tier | Price | Purpose |
-|------|-------|---------|
-| Free | $0 | Top-of-funnel acquisition and product trial |
-| Core | $29.99/year | Main self-serve subscription offer |
-| Premium | $79.99/year | Higher-value tier for travelers who want stronger personalization |
+## Priority Revenue Streams
 
-### Revenue Projection
+### 1. Corporate Travel Performance Programs
 
-| Period | Target |
-|--------|--------|
-| Year 1 | `$120K` revenue |
-| Year 2 | `$750K` revenue |
-| Year 3 run rate | `$1.2M ARR` |
+Offer:
 
-## Lean Company Design
+- leadership travel-performance programs
+- executive travel-readiness protocols
+- workshops
+- team dashboards
 
-JetLag is intentionally structured so one person can operate the business with AI support before expanding into a five-function workforce:
+Target buyers:
 
-- Product and Engineering
-- Marketing and Growth
-- Customer Success
-- Finance and Operations
-- Organic Community Engagement
+- consulting firms
+- investment banks
+- private equity firms
+- global sales organizations
+
+Pricing direction:
+
+- `$25K-$250K/year`
+
+### 2. Executive Concierge
+
+Offer:
+
+- personalized high-touch travel optimization
+- real-time guidance
+- route-specific support
+
+Target buyers:
+
+- founders
+- investors
+- c-suite leaders
+
+Pricing direction:
+
+- `$5K-$25K/year`
+
+### 3. Licensing
+
+Offer:
+
+- arrival rituals
+- travel protocols
+- product integrations
+
+Potential partners:
+
+- airlines
+- hotels
+- airport lounges
+- travel platforms
+
+### 4. Speaking And Thought Leadership
+
+Offer:
+
+- keynote topics around arrival, jet lag, and travel performance
+
+Pricing direction:
+
+- `$10K-$75K per talk`
+
+### 5. Certification
+
+Offer:
+
+- certified travel performance advisor
+
+Audience:
+
+- coaches
+- wellness consultants
+- travel advisors
+
+Pricing direction:
+
+- `$1K-$5K`
+
+### 6. Data And Insights
+
+Longer-term monetization:
+
+- aggregated travel-performance insights for corporate buyers and platforms
+
+## Role Of Consumer Product
+
+The consumer-facing app or concierge layer is still important, but its role is larger than direct subscription revenue alone. It is how JetLag:
+
+- builds trust
+- captures demand
+- gathers outcomes data
+- creates proof
+- develops a premium brand
+
+## Strategic Principle
+
+The strongest version of JetLag is not:
+
+- just an app
+- just a supplement brand
+- just a kit
+
+It is:
+
+- a travel performance system
+- a premium authority brand
+- an action layer on top of real travel behavior
 
 ## Key Questions
 
-- Which acquisition channels create the best early conversion to paid?
-- Does `Core` become the dominant monetization tier, or does `Premium` capture enough value to matter early?
-- Which product behaviors best predict second-trip retention?
+- which revenue stream should be prioritized first after concierge proof of demand
+- which enterprise buyer has the clearest pain tied to lost productivity from travel
+- which product behaviors will create the strongest bridge from consumer utility to high-margin enterprise offerings
