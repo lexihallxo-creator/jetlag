@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JetLag Express Plan</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --panel: rgba(255, 251, 245, 0.92);
+      --ink: #18222f;
+      --muted: #5c6672;
+      --accent: #0f766e;
+      --accent-dark: #0b5c56;
+      --line: rgba(24, 34, 47, 0.12);
+      --warm: #f59e0b;
+      --shadow: 0 24px 60px rgba(24, 34, 47, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(15, 118, 110, 0.16), transparent 32%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 72px;
+    }
+
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.1);
+      color: var(--accent-dark);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.05;
+      font-weight: 600;
+    }
+
+    h1 {
+      margin-top: 20px;
+      max-width: 9ch;
+      font-size: clamp(2.7rem, 8vw, 5.6rem);
+    }
+
+    .lead {
+      max-width: 620px;
+      margin-top: 20px;
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .hero-grid,
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+
+    .hero-copy {
+      grid-column: span 7;
+    }
+
+    .hero-card {
+      grid-column: span 5;
+      align-self: stretch;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .price {
+      font-size: 3rem;
+      margin-top: 10px;
+    }
+
+    .subtle {
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .button.secondary {
+      border-color: var(--line);
+      color: var(--ink);
+      background: transparent;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .meta-card,
+    .info-card {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    section {
+      margin-top: 28px;
+    }
+
+    .section-grid > * {
+      grid-column: span 4;
+    }
+
+    ul {
+      padding-left: 18px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .steps > * {
+      counter-increment: step;
+      position: relative;
+      padding-top: 56px;
+    }
+
+    .steps > *::before {
+      content: counter(step);
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.18);
+      color: #8a5600;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      background: rgba(15, 118, 110, 0.08);
+      color: var(--accent-dark);
+    }
+
+    @media (max-width: 860px) {
+      .hero-copy,
+      .hero-card,
+      .section-grid > * {
+        grid-column: 1 / -1;
+      }
+
+      .meta {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Manual Concierge Offer</div>
+          <h1>Land functional, not wrecked.</h1>
+          <p class="lead">
+            JetLag Express turns your upcoming itinerary into a personalized recovery plan for sleep, light, caffeine, and arrival timing. You send the trip details. We send back a clear plan you can actually follow.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="mailto:lexihallxo@gmail.com?subject=JetLag%20Express%20Plan">Book My Plan</a>
+            <a class="button secondary" href="#how-it-works">How It Works</a>
+          </div>
+          <div class="meta">
+            <div class="meta-card">
+              <strong>Best for</strong>
+              <p class="subtle">Travelers crossing multiple time zones in the next 7 days.</p>
+            </div>
+            <div class="meta-card">
+              <strong>Delivery</strong>
+              <p class="subtle">Fast turnaround with a practical before, during, and after flight plan.</p>
+            </div>
+            <div class="meta-card">
+              <strong>Focus</strong>
+              <p class="subtle">Sleep timing, light exposure, caffeine timing, and day-one recovery.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <div class="eyebrow">Launch Offer</div>
+          <h2 class="price">$29</h2>
+          <p class="subtle">Personalized JetLag Express Plan for one upcoming trip.</p>
+          <ul>
+            <li>Trip-specific recovery plan</li>
+            <li>Sleep and light timing guidance</li>
+            <li>Caffeine and arrival-day recommendations</li>
+            <li>One rewrite if your itinerary changes</li>
+          </ul>
+          <a class="button primary" style="width:100%; margin-top:12px;" href="mailto:lexihallxo@gmail.com?subject=I%20want%20JetLag%20Express">Get Started</a>
+        </aside>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="section-grid steps" style="counter-reset: step;">
+      <article class="info-card">
+        <h3>Share your trip</h3>
+        <p class="subtle">Send departure, arrival, destination, your normal sleep schedule, and any constraints.</p>
+      </article>
+      <article class="info-card">
+        <h3>Get your plan</h3>
+        <p class="subtle">Receive a clear pre-flight, flight-day, and arrival-day plan built around your trip.</p>
+      </article>
+      <article class="info-card">
+        <h3>Travel with less guesswork</h3>
+        <p class="subtle">Follow the plan instead of piecing together generic advice from articles and forums.</p>
+      </article>
+    </section>
+
+    <section class="section-grid">
+      <article class="info-card">
+        <h3>Who this is for</h3>
+        <ul>
+          <li>Business travelers with meetings soon after landing</li>
+          <li>International leisure travelers who want to enjoy the first days of the trip</li>
+          <li>Frequent flyers tired of guessing what works</li>
+        </ul>
+      </article>
+      <article class="info-card">
+        <h3>What you get</h3>
+        <ul>
+          <li>Simple action schedule matched to your route</li>
+          <li>Guidance for sleep, light, and caffeine timing</li>
+          <li>Arrival-day strategy for energy and recovery</li>
+        </ul>
+      </article>
+      <article class="info-card">
+        <h3>Why now</h3>
+        <ul>
+          <li>Useful before a full app even exists</li>
+          <li>Faster than learning a new tool</li>
+          <li>Built around your actual trip, not generic advice</li>
+        </ul>
+      </article>
+    </section>
+
+    <div class="footer-note">
+      Early launch version: a concierge service powered by JetLag's method. For questions or bookings, email <strong>lexihallxo@gmail.com</strong>.
+    </div>
+  </main>
+</body>
+</html>
