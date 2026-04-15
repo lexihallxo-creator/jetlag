@@ -1,0 +1,9 @@
+# Temporary local clone used to copy the original template
+source-template/
+
+# Local scan output
+daily-scans/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

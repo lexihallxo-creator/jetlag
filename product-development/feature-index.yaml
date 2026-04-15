@@ -1,0 +1,31 @@
+# JetLag - Feature Index
+# Active features mapped to product, engineering, and analytics artifacts.
+
+trip-planning:
+  smart-itinerary-import:
+    prd: product/PRDs/trip-planning/smart-itinerary-import-prd.md
+    eng-plan: engineering/plans/trip-planning/smart-itinerary-import.md
+    tickets:
+      - JET-101
+      - JET-108
+    metrics:
+      - analytics/metrics/trip-planning/itinerary-import-metrics.md
+
+sleep-recovery:
+  personalized-jet-lag-plan:
+    prd: product/PRDs/sleep-recovery/personalized-jet-lag-plan-prd.md
+    eng-plan: engineering/plans/sleep-recovery/personalized-jet-lag-plan.md
+    tickets:
+      - JET-120
+      - JET-127
+    metrics:
+      - analytics/metrics/sleep-recovery/recovery-plan-metrics.md
+
+engagement:
+  recovery-reminders:
+    prd: product/PRDs/engagement/recovery-reminders-prd.md
+    eng-plan: engineering/plans/engagement/recovery-reminders.md
+    tickets:
+      - JET-136
+    metrics:
+      - analytics/metrics/engagement/reminder-metrics.md

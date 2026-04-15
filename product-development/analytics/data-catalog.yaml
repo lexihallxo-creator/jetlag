@@ -1,0 +1,125 @@
+# Forge Data Catalog
+# Registry of warehouse tables. For column-level detail, see schemas/ docs.
+
+tables:
+  # --- Core entities ---
+  users:
+    database: ANALYTICS
+    schema: FORGE
+    description: User accounts - signups, profiles, auth metadata
+    owner: data-engineering
+    refresh: daily
+    upstream: Auth service → Fivetran
+    used_by: [retention, activation, funnel analysis]
+
+  organizations:
+    database: ANALYTICS
+    schema: FORGE
+    description: Organization accounts - team structure, plan tier, billing info
+    owner: data-engineering
+    refresh: daily
+    upstream: Billing service → Fivetran
+    used_by: [revenue reporting, account health, seat analysis]
+
+  projects:
+    database: ANALYTICS
+    schema: FORGE
+    description: Customer projects - metadata, creation date, framework, last activity
+    owner: data-engineering
+    refresh: daily
+    upstream: Forge API → Fivetran
+    used_by: [PCR, engagement, feature adoption]
+
+  # --- Generation ---
+  project_generations:
+    database: ANALYTICS
+    schema: FORGE
+    description: Every AI generation attempt - prompt, status, timing, model version, output type
+    owner: data-engineering
+    refresh: streaming (Snowpipe)
+    upstream: Generation service → Snowpipe
+    used_by: [GSR, generation quality, error taxonomy, model performance]
+    schema_doc: schemas/prototyping/project-generations.md
+
+  # --- Deployment ---
+  deployments:
+    database: ANALYTICS
+    schema: FORGE
+    description: Deployment events - project, environment, URL, status, duration
+    owner: data-engineering
+    refresh: streaming (Snowpipe)
+    upstream: Deploy service → Snowpipe
+    used_by: [TTD, deploy frequency, PCR]
+
+  domain_certificates:
+    database: ANALYTICS
+    schema: FORGE
+    description: Custom domain SSL certificates - domain, status, expiry, renewal events
+    owner: data-engineering
+    refresh: daily
+    upstream: Certificate manager → Fivetran
+    used_by: [custom domain adoption, SSL health monitoring]
+    schema_doc: schemas/deployment/domain_certificates.md
+
+  # --- Billing ---
+  subscriptions:
+    database: ANALYTICS
+    schema: FORGE
+    description: Subscription records - plan tier, MRR, start/end dates, trial status
+    owner: data-engineering
+    refresh: daily
+    upstream: Stripe → Fivetran
+    used_by: [revenue, churn, conversion, plan distribution]
+
+  credit_transactions:
+    database: ANALYTICS
+    schema: FORGE
+    description: Credit ledger - purchases, usage, refunds, referral credits, balance changes
+    owner: data-engineering
+    refresh: daily
+    upstream: Billing service → Fivetran
+    used_by: [credit usage dashboards, referral tracking, revenue recognition]
+    schema_doc: schemas/billing/credit_transactions.md
+
+  # --- Home Page ---
+  search_events:
+    database: ANALYTICS
+    schema: FORGE
+    description: Project search interactions - queries, results, clicks, filters
+    owner: data-engineering
+    refresh: streaming (Snowpipe)
+    upstream: Search service → Snowpipe
+    used_by: [search quality, home page engagement]
+    schema_doc: schemas/home-page/search_events.md
+
+  # --- Prototyping ---
+  project_versions:
+    database: ANALYTICS
+    schema: FORGE
+    description: Version history snapshots - project state at each save point
+    owner: data-engineering
+    refresh: daily
+    upstream: Version service → Fivetran
+    used_by: [version history adoption, iteration depth]
+    schema_doc: schemas/prototyping/project_versions.md
+
+  # --- Starter Templates ---
+  published_templates:
+    database: ANALYTICS
+    schema: FORGE
+    description: Community-published starter templates - metadata, author, category, ratings
+    owner: data-engineering
+    refresh: daily
+    upstream: Template service → Fivetran
+    used_by: [marketplace analytics, template quality]
+    schema_doc: schemas/starter-templates/published_templates.md
+
+  template_forks:
+    database: ANALYTICS
+    schema: FORGE
+    description: Template fork events - which templates are used, by whom, conversion to projects
+    owner: data-engineering
+    refresh: daily
+    upstream: Template service → Fivetran
+    used_by: [template adoption, marketplace conversion, starter template impact]
+    schema_doc: schemas/starter-templates/template_forks.md
