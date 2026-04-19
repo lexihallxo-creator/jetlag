@@ -9,6 +9,30 @@ Phase 1 deployment target:
 
 This document assumes the app is being deployed as two services plus a managed database.
 
+## Zero-Credit Frontend Option
+
+If Vercel credits are exhausted, the repo now includes a GitHub Pages workflow for the `frontend/` app:
+
+- Workflow: `.github/workflows/deploy-frontend-pages.yml`
+- Frontend build mode: static export via `frontend/next.config.mjs`
+
+What it does:
+
+- builds the Next frontend on every push to `master`
+- bakes in `NEXT_PUBLIC_API_URL=https://hxp.up.railway.app`
+- publishes the exported site to GitHub Pages at `/jetlag`
+
+One-time GitHub setup:
+
+1. Open the repo `Settings` on GitHub.
+2. Open `Pages`.
+3. Set `Build and deployment` source to `GitHub Actions`.
+4. Let the workflow run once.
+
+Expected site URL:
+
+- `https://lexihallxo-creator.github.io/jetlag/`
+
 ## Local Run
 
 Backend:
