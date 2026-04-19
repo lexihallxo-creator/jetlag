@@ -57,7 +57,7 @@ const EMPTY_HEALTH: HealthSnapshot = {
   ok: false,
   status: "checking",
   message: "Checking backend",
-  checkedAt: new Date().toISOString(),
+  checkedAt: "",
   details: null,
 };
 
