@@ -7,3 +7,16 @@ daily-scans/
 # OS/editor noise
 .DS_Store
 Thumbs.db
+
+# App env and build artifacts
+backend/.env
+backend/.venv/
+frontend/.env.local
+frontend/.next/
+frontend/node_modules/
+backend/.pytest_cache/
+backend/pytest-cache-files-*/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/uvicorn.log
+backend/uvicorn.err.log

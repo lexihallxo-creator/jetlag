@@ -1,0 +1,415 @@
+{
+  "name": "hxp Lead Engine Phase 1 Daily Scan",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7 * * *"
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        220,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Phase 1 daily scan for hxp.digital. Uses env-driven HTTP requests only.\n\nRequired env:\n- HXP_API_BASE_URL\nOptional env:\n- HXP_API_TOKEN\n\nAdjust endpoint payload fields if backend contracts change during implementation.",
+        "height": 241,
+        "width": 344,
+        "color": 6
+      },
+      "id": "workflow-note",
+      "name": "Workflow Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        80,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "towns",
+              "name": "towns",
+              "value": "=[\"Raleigh\",\"Durham\",\"Chapel Hill\",\"Cary\",\"Morrisville\",\"Apex\",\"Holly Springs\",\"Garner\",\"Wake Forest\",\"Zebulon\",\"Sanford\",\"Pittsboro\",\"Carrboro\",\"Wilson\"]",
+              "type": "array"
+            },
+            {
+              "id": "categories",
+              "name": "categories",
+              "value": "=[\"dentist\",\"chiropractor\",\"med spa\",\"hvac contractor\",\"roofing contractor\",\"plumber\",\"home remodeling contractor\",\"family law attorney\"]",
+              "type": "array"
+            },
+            {
+              "id": "source",
+              "name": "source",
+              "value": "google_places",
+              "type": "string"
+            },
+            {
+              "id": "limit",
+              "name": "limit",
+              "value": "10",
+              "type": "string"
+            },
+            {
+              "id": "enrichTopN",
+              "name": "enrichTopN",
+              "value": "3",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "seed-config",
+      "name": "Seed Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const towns = $json.towns || [];\nconst categories = $json.categories || [];\nconst source = $json.source || 'google_places';\nconst limit = Number($json.limit || 10);\nconst enrichTopN = Number($json.enrichTopN || 3);\n\nconst combos = [];\nfor (const city of towns) {\n  for (const query of categories) {\n    combos.push({\n      city,\n      query,\n      source,\n      limit,\n      enrichTopN,\n    });\n  }\n}\n\nreturn combos.map((combo) => ({ json: combo }));"
+      },
+      "id": "build-combos",
+      "name": "Build Town Category Combos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "combo-batch",
+      "name": "Process Each Combo",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        920,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.HXP_API_BASE_URL + '/search/businesses'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{$env.HXP_API_TOKEN ? 'Bearer ' + $env.HXP_API_TOKEN : ''}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": $json.query,\n  \"city\": $json.city,\n  \"country\": \"USA\",\n  \"sources\": [$json.source],\n  \"max_results\": $json.limit\n}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "search-businesses",
+      "name": "Search Businesses",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const combo = $('Process Each Combo').item.json;\nconst response = $json;\nconst businesses = response.businesses || response.results || response.items || [];\n\nconst scored = businesses\n  .map((business, index) => {\n    const rating = Number(business.rating || 0);\n    const reviews = Number(business.review_count || business.user_ratings_total || 0);\n    const rankHint = Math.min(index + 1, 20);\n    const demandSignal = rating * 10 + Math.min(reviews, 300) * 0.2 - rankHint;\n    return {\n      ...business,\n      _combo: combo,\n      _demandSignal: demandSignal,\n    };\n  })\n  .sort((a, b) => b._demandSignal - a._demandSignal)\n  .slice(0, combo.enrichTopN || 3);\n\nreturn scored.map((business) => ({ json: business }));"
+      },
+      "id": "pick-top-results",
+      "name": "Pick Top Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "lead-batch",
+      "name": "Process Each Lead",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1640,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.HXP_API_BASE_URL + '/leads/ingest'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{$env.HXP_API_TOKEN ? 'Bearer ' + $env.HXP_API_TOKEN : ''}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"leads\": [\n    {\n      \"source_record_id\": $json.source_record_id || $json.place_id || $json.id,\n      \"source\": $json.source || $json._combo?.source || 'google_places',\n      \"business_name\": $json.business_name || $json.name,\n      \"category\": $json.category || $json.primary_type || $json._combo?.query || 'unknown',\n      \"city\": $json.city || $json._combo?.city || null,\n      \"country\": $json.country || 'USA',\n      \"address\": $json.address || $json.formatted_address || null,\n      \"website\": $json.website || $json.url || null,\n      \"phone\": $json.phone || $json.nationalPhoneNumber || null,\n      \"rating\": $json.rating || null,\n      \"review_count\": $json.review_count || $json.user_ratings_total || null,\n      \"source_url\": $json.source_url || $json.googleMapsUri || null,\n      \"selected\": true,\n      \"status\": \"queued\",\n      \"raw_payload\": $json\n    }\n  ]\n}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "ingest-lead",
+      "name": "Ingest Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.HXP_API_BASE_URL + '/leads/' + ($json.results?.[0]?.id || $json.id || $json.lead_id || $json.data?.id) + '/enrich'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{$env.HXP_API_TOKEN ? 'Bearer ' + $env.HXP_API_TOKEN : ''}}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "enrich-lead",
+      "name": "Enrich Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2120,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "seconds"
+      },
+      "id": "rate-limit",
+      "name": "Rate Limit",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2360,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{$env.HXP_API_BASE_URL + '/metrics/dashboard'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{$env.HXP_API_TOKEN ? 'Bearer ' + $env.HXP_API_TOKEN : ''}}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "refresh-metrics",
+      "name": "Refresh Metrics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2600,
+        320
+      ]
+    }
+  ],
+  "connections": {
+    "Daily Trigger": {
+      "main": [
+        [
+          {
+            "node": "Seed Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seed Config": {
+      "main": [
+        [
+          {
+            "node": "Build Town Category Combos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Town Category Combos": {
+      "main": [
+        [
+          {
+            "node": "Process Each Combo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Combo": {
+      "main": [
+        [
+          {
+            "node": "Search Businesses",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Refresh Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Businesses": {
+      "main": [
+        [
+          {
+            "node": "Pick Top Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Top Results": {
+      "main": [
+        [
+          {
+            "node": "Process Each Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Lead": {
+      "main": [
+        [
+          {
+            "node": "Ingest Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Process Each Combo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingest Lead": {
+      "main": [
+        [
+          {
+            "node": "Enrich Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich Lead": {
+      "main": [
+        [
+          {
+            "node": "Rate Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rate Limit": {
+      "main": [
+        [
+          {
+            "node": "Process Each Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "active": false,
+  "versionId": "b9d7b8c0-3c9f-4f0f-9c43-a2ab8f52e1d9",
+  "tags": []
+}
